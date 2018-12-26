@@ -11,20 +11,15 @@ BAMPATH=$2
 BED=$3
 OUT=$4
 
+source ./Config.cfg
 
-PICARD="/home/sashok/Documents/Picard/picard.jar"
-GATK="/home/sashok/Documents/gatk/gatk-4.0.11.0/gatk-package-4.0.11.0-local.jar"
-
-
-
-
-java -Xmx12G -jar $PICARD \
+java $MaxMemory -jar $PICARD \
 	SortSam \
 	SO=coordinate \
 	I="$BAMPATH/$BAMNAME.bam" \
 	O="$OUT/$1_sorted.bam"
 
-java -Xmx12G -jar $PICARD \
+java $MaxMemory -jar $PICARD \
 	AddOrReplaceReadGroups \
 	I="$OUT/$1_sorted.bam" \
 	O="$OUT/$1_formated.bam" \
@@ -34,7 +29,7 @@ java -Xmx12G -jar $PICARD \
 	RGPU=unit1 \
 	RGSM=20
 
-java -Xmx12G -jar $PICARD \
+java $MaxMemory -jar $PICARD \
 	MarkDuplicates \
 	I="$OUT/$1_formated.bam" \
 	O="$OUT/$1_ready.bam" \
@@ -47,27 +42,27 @@ samtools view -b "$OUT/$1_ready.bam" \
 	chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 \
 	chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > "$OUT/$1_chop.bam"
 
-java -Xmx12G -jar $GATK \
+java $MaxMemory -jar $GATK \
 	BaseRecalibrator \
 	-R $FA \
 	-I "$OUT/$1_chop.bam" \
 	-known-sites $VCF \
 	-O "$OUT/$1.table"
 
-java -Xmx12G -jar $GATK \
+java $MaxMemory -jar $GATK \
 	ApplyBQSR \
 	-R $FA \
 	-I "$OUT/$1_chop.bam" \
 	--bqsr-recal-file "$OUT/$1.table" \
 	-O "$OUT/$1_final.bam"
 
-java -Xmx12G -jar $PICARD \
+java $MaxMemory -jar $PICARD \
 	BedToIntervalList \
 	I=$BED \
 	O="$OUT/$1_Peaks.interval_list" \
 	SD=$FD
 
-java -Xmx12G -jar $GATK \
+java $MaxMemory -jar $GATK \
 	HaplotypeCaller \
 	-R $FA \
 	-I "$OUT/$1_final.bam" \
