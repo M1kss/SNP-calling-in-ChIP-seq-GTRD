@@ -1,5 +1,6 @@
 USAGE MESSAGE:
-	bash EBA.sh \
+	bash SNPcalling.sh \
+
 		BAM_name (without .bam)\
 		Control_bam_name (without .bam) \
 		Path_to_bams \
@@ -12,7 +13,7 @@ USAGE MESSAGE:
 
 
 USAGE EXAMPLE:
-	bash EBA.sh \
+	bash SNPcalling.sh \
 		ALIGNSxxxxxx \
 		ALIGNSxxxxxx \
 		/home/sashok/Documents/ASB/sorted \
