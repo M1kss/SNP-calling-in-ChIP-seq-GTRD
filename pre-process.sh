@@ -1,94 +1,68 @@
 #!/bin/bash
 
+WG=$false
+while [ "`echo $1 | cut -c1`" = "-" ]
+do
+    case "$1" in
+        -Out) OUT=$2
+		echo "$OUT"
+        	shift 2;;
+		
+        -Ref) REFERENCE=$2
+        	shift 2;;
+	-Exp) EXP=$2
+		EXPPATH=${EXP%/*}
+		[ "$EXPPATH" != "$EXP" ] && TMP="${EXP:${#EXPPATH}}"
+		EXPNAME=${TMP%.*}
+		echo "$EXPPATH"
+        	shift 2;;
+	-Ctrl) CTRL=$2
+		CTRLPATH=${CTRL%/*}
+		[ "$CTRLPATH" != "$CTRL" ] && TMP="${CTRL:${#CTRLPATH}}"
+		CTRLNAME=${TMP%.*}
+              	shift 2;;
+	-Peaks) PEAKS=$2
+              	shift 2;;
+	-VCF) VCF=$2
+              	shift 2;;
+	-WG) WG=$true
+		shift 1;;
+        *)
+                echo "There is no option $1"
+		break
+            ;;
+	esac
+done
 
+FA=$REFERENCE/"hg38-norm.fasta"
+FD=$REFERENCE/"hg38-norm.dict"
 
+bash pre-process.sh $EXPNAME \
+	$EXPPATH\
+	$PEAKS \
+	$OUT \
+	$VCF \
+	$FA \
+	$FD \
+	$false
+wait
 
-VCF=$5
-FA=$6
-FD=$7
-BAMNAME=$1
-BAMPATH=$2
-BED=$3
-OUT=$4
-WG=$8
+bash pre-process.sh $CTRLNAME \
+	$CTRLPATH
+	$PEAKS \
+	$OUT \
+	$VCF \
+	$FA \
+	$FD \
+	$WG
 
-source ./Config.cfg
+wait
 
+bash make_tables.sh $BAMNAME $CTRLNAME \
+	"$OUT/$BAMNAME.vcf" \
+	"$OUT/${CTRLNAME}.vcf" \
+	$OUT \
+	$REFERENCE \
+	$FA
 
-java $MaxMemory -jar $PICARD \
-	SortSam \
-	SO=coordinate \
-	I="$BAMPATH/$BAMNAME.bam" \
-	O="$OUT/${BAMNAME}_sorted.bam"
-
-java $MaxMemory -jar $PICARD \
-	AddOrReplaceReadGroups \
-	I="$OUT/$1_sorted.bam" \
-	O="$OUT/$1_formated.bam" \
-	RGID=1 \
-	RGLB=lib1 \
-	RGPL=illumina \
-	RGPU=unit1 \
-	RGSM=20
-
-java $MaxMemory -jar $PICARD \
-	MarkDuplicates \
-	I="$OUT/$1_formated.bam" \
-	O="$OUT/$1_ready.bam" \
-	REMOVE_DUPLICATES=true \
-	M="$OUT/$1_metrics.txt"
-
-samtools index "$OUT/$1_ready.bam"
-
-samtools view -b "$OUT/$1_ready.bam" \
-	chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 \
-	chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > "$OUT/$1_chop.bam"
-
-java $MaxMemory -jar $GATK \
-	BaseRecalibrator \
-	-R $FA \
-	-I "$OUT/$1_chop.bam" \
-	-known-sites $VCF \
-	-O "$OUT/$1.table"
-
-java $MaxMemory -jar $GATK \
-	ApplyBQSR \
-	-R $FA \
-	-I "$OUT/$1_chop.bam" \
-	--bqsr-recal-file "$OUT/$1.table" \
-	-O "$OUT/$1_final.bam"
-
-java $MaxMemory -jar $PICARD \
-	BedToIntervalList \
-	I=$BED \
-	O="$OUT/$1_Peaks.interval_list" \
-	SD=$FD
-
-if [$WG = 0]
-	then
-	java $MaxMemory -jar $GATK \
-		HaplotypeCaller \
-		-R $FA \
-		-I "$OUT/$1_final.bam" \
-		--dbsnp $VCF \
-		-O "$OUT/$1.vcf" \
-		-L "$OUT/$1_Peaks.interval_list"
-	else
-	java $MaxMemory -jar $GATK \
-		HaplotypeCaller \
-		-R $FA \
-		-I "$OUT/$1_final.bam" \
-		--dbsnp $VCF \
-		-O "$OUT/$1.vcf" 
-fi
-
-rm "$OUT/$1_sorted.bam"
-rm "$OUT/$1_formated.bam"
-rm "$OUT/$1_ready.bam"
-rm "$OUT/$1_metrics.txt"
-rm "$OUT/$1_chop.bam"
-rm "$OUT/$1.table"
-rm "$OUT/$1_Peaks.interval_list"
-rm "$OUT/$1_ready.bam.bai"
-
-exit 0
+#exit 0
