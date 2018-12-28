@@ -1,8 +1,6 @@
 #!/bin/bash
 
 
-
-
 VCF=$5
 FA=$6
 FD=$7
@@ -14,80 +12,74 @@ WG=$8
 
 source ./Config.cfg
 
+samtools index "$OUT/$BAMNAME.bam"
 
-java $MaxMemory -jar $PICARD \
-	SortSam \
-	SO=coordinate \
-	I="$BAMPATH/$BAMNAME.bam" \
-	O="$OUT/${BAMNAME}_sorted.bam"
+samtools view -b "$OUT/$BAMNAME.bam" \
+	chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 \
+	chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > "$OUT/${BAMNAME}_chop.bam"
 
-java $MaxMemory -jar $PICARD \
+java $JavaParameters -jar $PICARD \
 	AddOrReplaceReadGroups \
-	I="$OUT/$1_sorted.bam" \
-	O="$OUT/$1_formated.bam" \
+	I="$OUT/${BAMNAME}_chop.bam" \
+	O="$OUT/${BAMNAME}_formated.bam" \
 	RGID=1 \
 	RGLB=lib1 \
 	RGPL=illumina \
 	RGPU=unit1 \
 	RGSM=20
 
-java $MaxMemory -jar $PICARD \
+java $JavaParameters -jar $PICARD \
 	MarkDuplicates \
-	I="$OUT/$1_formated.bam" \
-	O="$OUT/$1_ready.bam" \
+	I="$OUT/${BAMNAME}_formated.bam" \
+	O="$OUT/${BAMNAME}_ready.bam" \
 	REMOVE_DUPLICATES=true \
-	M="$OUT/$1_metrics.txt"
+	M="$OUT/${BAMNAME}_metrics.txt"
 
-samtools index "$OUT/$1_ready.bam"
 
-samtools view -b "$OUT/$1_ready.bam" \
-	chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 \
-	chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY > "$OUT/$1_chop.bam"
 
-java $MaxMemory -jar $GATK \
+java $JavaParameters -jar $GATK \
 	BaseRecalibrator \
 	-R $FA \
-	-I "$OUT/$1_chop.bam" \
+	-I "$OUT/${BAMNAME}_ready.bam" \
 	-known-sites $VCF \
-	-O "$OUT/$1.table"
+	-O "$OUT/${BAMNAME}.table"
 
-java $MaxMemory -jar $GATK \
+java $JavaParameters -jar $GATK \
 	ApplyBQSR \
 	-R $FA \
-	-I "$OUT/$1_chop.bam" \
-	--bqsr-recal-file "$OUT/$1.table" \
-	-O "$OUT/$1_final.bam"
+	-I "$OUT/${BAMNAME}_ready.bam" \
+	--bqsr-recal-file "$OUT/${BAMNAME}.table" \
+	-O "$OUT/${BAMNAME}_final.bam"
 
-java $MaxMemory -jar $PICARD \
+java $JavaParameters -jar $PICARD \
 	BedToIntervalList \
 	I=$BED \
-	O="$OUT/$1_Peaks.interval_list" \
+	O="$OUT/${BAMNAME}_Peaks.interval_list" \
 	SD=$FD
 
 if $WG; then
-		java $MaxMemory -jar $GATK \
+		java $JavaParameters -jar $GATK \
 		HaplotypeCaller \
 		-R $FA \
-		-I "$OUT/$1_final.bam" \
+		-I "$OUT/${BAMNAME}_final.bam" \
 		--dbsnp $VCF \
-		-O "$OUT/$1.vcf" 
+		-O "$OUT/${BAMNAME}.vcf" 
 	else
-		java $MaxMemory -jar $GATK \
+		java $JavaParameters -jar $GATK \
 		HaplotypeCaller \
 		-R $FA \
-		-I "$OUT/$1_final.bam" \
+		-I "$OUT/${BAMNAME}_final.bam" \
 		--dbsnp $VCF \
-		-O "$OUT/$1.vcf" \
-		-L "$OUT/$1_Peaks.interval_list"
+		-O "$OUT/${BAMNAME}.vcf" \
+		-L "$OUT/${BAMNAME}_Peaks.interval_list"
 fi
 
-rm "$OUT/$1_sorted.bam"
-rm "$OUT/$1_formated.bam"
-rm "$OUT/$1_ready.bam"
-rm "$OUT/$1_metrics.txt"
-rm "$OUT/$1_chop.bam"
-rm "$OUT/$1.table"
-rm "$OUT/$1_Peaks.interval_list"
-rm "$OUT/$1_ready.bam.bai"
+rm "$OUT/${BAMNAME}_formated.bam"
+rm "$OUT/${BAMNAME}_ready.bam"
+rm "$OUT/${BAMNAME}_metrics.txt"
+rm "$OUT/${BAMNAME}_chop.bam"
+rm "$OUT/${BAMNAME}.table"
+rm "$OUT/${BAMNAME}_Peaks.interval_list"
+rm "$OUT/${BAMNAME}_ready.bam.bai"
 
 exit 0

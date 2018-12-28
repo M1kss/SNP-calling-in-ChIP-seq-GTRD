@@ -43,7 +43,6 @@ bash pre-process.sh $EXPNAME \
 	$FA \
 	$FD \
 	false
-wait
 
 bash pre-process.sh $CTRLNAME \
 	$CTRLPATH \
@@ -54,12 +53,16 @@ bash pre-process.sh $CTRLNAME \
 	$FD \
 	$WG
 
-wait
 
 bash make_tables.sh $EXPNAME $CTRLNAME \
 	"$OUT/$EXPNAME.vcf" \
 	"$OUT/${CTRLNAME}.vcf" \
 	$OUT \
 	$FA
+
+rm "$OUT/${EXPNAME}_final.bam"
+rm "$OUT/${CTRLNAME}_final.bam"
+rm "$OUT/${EXPNAME}_final.bai"
+rm "$OUT/${CTRLNAME}_final.bai"
 
 exit 0
