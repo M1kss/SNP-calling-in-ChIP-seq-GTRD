@@ -3,13 +3,15 @@
 
 
 REFERENCE=$5
-VCF="$REFERENCE/$6"
-FA="$REFERENCE/$7"
-FD="$REFERENCE/$8"
+VCF=$6
+FA=$7
+FD=$8
 BAMNAME=$1
 BAMPATH=$2
 BED=$3
 OUT=$4
+WG=$9
+ 
 
 source ./Config.cfg
 
@@ -18,7 +20,7 @@ java $MaxMemory -jar $PICARD \
 	SortSam \
 	SO=coordinate \
 	I="$BAMPATH/$BAMNAME.bam" \
-	O="$OUT/$1_sorted.bam"
+	O="$OUT/${BAMNAME}_sorted.bam"
 
 java $MaxMemory -jar $PICARD \
 	AddOrReplaceReadGroups \
@@ -68,9 +70,10 @@ java $MaxMemory -jar $GATK \
 	-R $FA \
 	-I "$OUT/$1_final.bam" \
 	--dbsnp $VCF \
-	-L "$OUT/$1_Peaks.interval_list" \
-	-O "$OUT/$1.vcf"
-
+	
+	-O "$OUT/$1.vcf" \
+	if $WG == 0:	
+		-L "$OUT/$1_Peaks.interval_list" 
 
 rm "$OUT/$1_sorted.bam"
 rm "$OUT/$1_formated.bam"
