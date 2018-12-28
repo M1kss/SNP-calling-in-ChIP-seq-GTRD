@@ -1,44 +1,65 @@
 #!/bin/bash
 
-BAMNAME=$1
-CTRLNAME=$2
-BAMSPATH=$3
-REFERENCE=$4
-VCF=$5
-FA=$6
-FD=$7
-PEAKS=$8
-OUT=$9
+WG=false
+while [ "`echo $1 | cut -c1`" = "-" ]
+do
+    case "$1" in
+        -Out) OUT=$2
+        	shift 2;;
+		
+        -Ref) REFERENCE=$2
+        	shift 2;;
+	-Exp) EXP=$2
+		EXPPATH=${EXP%/*}
+		[ "$EXPPATH" != "$EXP" ] && TMP="${EXP:${#EXPPATH}}"
+		EXPNAME=${TMP%.*}
+        	shift 2;;
+	-Ctrl) CTRL=$2
+		CTRLPATH=${CTRL%/*}
+		[ "$CTRLPATH" != "$CTRL" ] && T="${CTRL:${#CTRLPATH}}"
+		CTRLNAME=${T%.*}
+              	shift 2;;
+	-Peaks) PEAKS=$2
+              	shift 2;;
+	-VCF) VCF=$2
+              	shift 2;;
+	-WG) WG=true
+		shift 1;;
+        *)
+                echo "There is no option $1"
+		break
+            ;;
+	esac
+done
 
+FA=$REFERENCE/"hg38-norm.fasta"
+FD=$REFERENCE/"hg38-norm.dict"
 
-bash pre-process.sh $BAMNAME \
-	$BAMSPATH \
+bash pre-process.sh $EXPNAME \
+	$EXPPATH \
 	$PEAKS \
 	$OUT \
-	$REFERENCE \
 	$VCF \
 	$FA \
-	$FD
-	
+	$FD \
+	false
+wait
+
+bash pre-process.sh $CTRLNAME \
+	$CTRLPATH \
+	$PEAKS \
+	$OUT \
+	$VCF \
+	$FA \
+	$FD \
+	$WG
 
 wait
 
-bash pre-process-all.sh $CTRLNAME \
-	$BAMSPATH \
-	$PEAKS \
+bash make_tables.sh $EXPNAME $CTRLNAME \
+	"$OUT/$EXPNAME.vcf" \
+	"$OUT/${CTRLNAME}.vcf" \
 	$OUT \
-	$REFERENCE \
-	$VCF \
-	$FA \
-	$FD
-
-wait
-
-bash make_tables.sh $BAMNAME $CTRLNAME \
-	"$OUT/$BAMNAME.vcf" \
-	"$OUT/$1ctrl.vcf" \
-	$OUT \
-	$REFERENCE \
 	$FA
 
 exit 0
