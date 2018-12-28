@@ -2,16 +2,15 @@
 
 
 
-REFERENCE=$5
-VCF=$6
-FA=$7
-FD=$8
+
+VCF=$5
+FA=$6
+FD=$7
 BAMNAME=$1
 BAMPATH=$2
 BED=$3
 OUT=$4
-WG=$9
- 
+WG=$8
 
 source ./Config.cfg
 
