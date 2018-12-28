@@ -64,16 +64,23 @@ java $MaxMemory -jar $PICARD \
 	O="$OUT/$1_Peaks.interval_list" \
 	SD=$FD
 
-java $MaxMemory -jar $GATK \
-	HaplotypeCaller \
-	-R $FA \
-	-I "$OUT/$1_final.bam" \
-	--dbsnp $VCF \
-	-O "$OUT/$1.vcf" \
-	if [$WG == 0]
-		then
-		-L "$OUT/$1_Peaks.interval_list" 
-	fi
+if [$WG = 0]
+	then
+	java $MaxMemory -jar $GATK \
+		HaplotypeCaller \
+		-R $FA \
+		-I "$OUT/$1_final.bam" \
+		--dbsnp $VCF \
+		-O "$OUT/$1.vcf" \
+		-L "$OUT/$1_Peaks.interval_list"
+	else
+	java $MaxMemory -jar $GATK \
+		HaplotypeCaller \
+		-R $FA \
+		-I "$OUT/$1_final.bam" \
+		--dbsnp $VCF \
+		-O "$OUT/$1.vcf" 
+fi
 
 rm "$OUT/$1_sorted.bam"
 rm "$OUT/$1_formated.bam"
