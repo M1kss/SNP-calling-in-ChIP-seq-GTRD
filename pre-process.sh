@@ -70,10 +70,11 @@ java $MaxMemory -jar $GATK \
 	-R $FA \
 	-I "$OUT/$1_final.bam" \
 	--dbsnp $VCF \
-	
 	-O "$OUT/$1.vcf" \
-	if $WG == 0:	
+	if [$WG == 0]
+		then
 		-L "$OUT/$1_Peaks.interval_list" 
+	fi
 
 rm "$OUT/$1_sorted.bam"
 rm "$OUT/$1_formated.bam"
