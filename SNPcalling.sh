@@ -6,6 +6,7 @@ do
     case "$1" in
         -Out) OUT=$2
         	shift 2;;
+		echo "$Out"
         -Ref) REFERENCE=$2
         	shift 2;;
 	-Exp) EXP=$2
@@ -39,7 +40,6 @@ bash pre-process.sh $EXPNAME \
 	$EXPPATH\
 	$PEAKS \
 	$OUT \
-	$REFERENCE \
 	$VCF \
 	$FA \
 	$FD \
@@ -65,4 +65,4 @@ bash make_tables.sh $BAMNAME $CTRLNAME \
 	$REFERENCE \
 	$FA
 
-#exit 0
+exit 0
