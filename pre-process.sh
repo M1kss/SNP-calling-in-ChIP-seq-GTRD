@@ -11,6 +11,7 @@ OUT=$4
 WG=$8
 
 source ./Config.cfg
+
 echo "$BAMPATH$BAMNAME.bai"
 if [ ! -f $BAMPATH$BAMNAME.bai ]; then
 	echo "Index file for $BAMNAME not found, indexing.."
