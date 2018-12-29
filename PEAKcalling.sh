@@ -1,22 +1,31 @@
+GETNAME(){
+local var=$1
+local varpath=${var%/*}
+[ "$varpath" != "$var" ] && local vartmp="${var:${#varpath}}"
+echo ${vartmp%.*}
+}
+
 while [ "`echo $1 | cut -c1`" = "-" ]
 do
     case "$1" in
-        -Out) OUT=$2
+        -Out) OUTFILE=$2
+		OUT=${OUTFILE%/*}
         	shift 2;;
 		
         -macs) macs=$2
-		macsPATH=${macs%/*}
-		[ "$macsPATH" != "$macs" ] && T="${macs:${#macsPATH}}"
-		NAME=${T%.*}
+		NAMEM=$( GETNAME $macs)
         	shift 2;;
 
 	-sissrs) sissrs=$2
+		NAMES=$( GETNAME $sissrs)
         	shift 2;;
 
 	-cpics) cpics=$2
+		NAMEC=$( GETNAME $cpics)
               	shift 2;;
 
 	-gem) gem=$2
+		NAMEG=$( GETNAME $gem)
               	shift 2;;
 
         *)
@@ -27,19 +36,19 @@ do
 done
 
 
-python3 IntervalsToBed.py $macs "macs" $NAME $OUT
-python3 IntervalsToBed.py $sissrs "sissrs" $NAME $OUT
-python3 IntervalsToBed.py $gem "gem" $NAME $OUT
-python3 IntervalsToBed.py $cpics "cpics" $NAME $OUT
+python3 IntervalsToBed.py $macs "macs" $NAMEM $OUT
+python3 IntervalsToBed.py $sissrs "sissrs" $NAMES $OUT
+python3 IntervalsToBed.py $gem "gem" $NAMEG $OUT
+python3 IntervalsToBed.py $cpics "cpics" $NAMEC $OUT
 
-cat $OUT/$NAME".cpics.bed" $OUT/$NAME".gem.bed" $OUT/$NAME".sissrs.bed" $OUT/$NAME".macs.bed" > $OUT/$NAME".unmerged.bed"
+cat $OUT/$NAMEC".cpics.bed" $OUT/$NAMEG".gem.bed" $OUT/$NAMES".sissrs.bed" $OUT/$NAMEM".macs.bed" > $OUTFILE".unmerged.bed"
 
-rm $OUT/$NAME".cpics.bed" $OUT/$NAME".gem.bed" $OUT/$NAME".sissrs.bed" $OUT/$NAME".macs.bed"
+rm $OUT/$NAMEC".cpics.bed" $OUT/$NAMEG".gem.bed" $OUT/$NAMES".sissrs.bed" $OUT/$NAMEM".macs.bed"
 
-bedtools sort -i $OUT/$NAME".unmerged.bed" > $OUT/$NAME".unmerged.sorted.bed"
+bedtools sort -i $OUTFILE".unmerged.bed" > $OUTFILE".unmerged.sorted.bed"
 
-rm $OUT/$NAME".unmerged.bed"
+rm $OUTFILE".unmerged.bed"
 
-bedtools merge -i $OUT/$NAME".unmerged.sorted.bed" > $OUT/$NAME".bed"
+bedtools merge -i $OUTFILE".unmerged.sorted.bed" > $OUTFILE".bed"
 
-rm $OUT/$NAME".unmerged.sorted.bed"
+rm $OUTFILE".unmerged.sorted.bed"
