@@ -5,6 +5,7 @@
 		-sissrs /path/to/peaks/sissrs/PEAKS000000.interval \
 		-cpics /path/to/peaks/cpics/PEAKS000000.interval \
 		-Out /output_path/PEAKS000000.bed
+		
 создаст файл /output_path_to_peaks/PEAKS000000.bed
 требуются данные всех 4 коллеров
 
@@ -13,6 +14,7 @@
     bash create_reference.sh \
         -RefFolder /reference/directory
         -RefGenome /path/to/reference/genome.fasta
+        
 создает normalized референсный геном, индекс и dict в папке /reference/directory
 
 #SNPCALLING USAGE EXAMPLE:
@@ -24,4 +26,5 @@
 		-Peaks /output_path_to_peaks/PEAKS000000.bed \
 		-Out /output/folder/name/for/ALIGNS000000_SNPs \
 		-WG (optional, whole-genome SNP-calling in ctrl)
+		
 Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией
