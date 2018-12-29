@@ -32,8 +32,8 @@ do
 	esac
 done
 
-FA=$REFERENCE/"hg38-norm.fasta"
-FD=$REFERENCE/"hg38-norm.dict"
+FA=$REFERENCE/"genome-norm.fasta"
+FD=$REFERENCE/"genome-norm.dict"
 
 bash pre-process.sh $EXPNAME \
 	$EXPPATH \
