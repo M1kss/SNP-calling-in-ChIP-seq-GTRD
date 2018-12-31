@@ -1,4 +1,4 @@
-#PEAKCALLING USAGE EXAMPLE:
+# PEAKCALLING USAGE EXAMPLE:
 
 	bash PEAKcalling.sh \
 		-macs /path/to/peaks/macs/PEAKS000000.interval \
@@ -11,7 +11,7 @@
 требуются данные всех 4 коллеров
 
 
-#CREATE_REFERENCE USAGE EXAMPLE:
+# CREATE_REFERENCE USAGE EXAMPLE:
 
     bash create_reference.sh \
         -RefFolder /reference/directory
@@ -19,7 +19,7 @@
         
 Создаст normalized референсный геном, индекс и dict в папке /reference/directory/
 
-#SNPCALLING USAGE EXAMPLE:
+# SNPCALLING USAGE EXAMPLE:
 
 	bash SNPcalling.sh \
 		-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
@@ -32,7 +32,7 @@
 		
 Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией в директории /output/folder/name/for/ALIGNS000000_SNPs/ (которую нужно предварительно создать, если её нет, название не имеет значения)
 
-#INSTALLATION INSTRUCTIONS:
+# INSTALLATION INSTRUCTIONS:
 
 1) python3
 	python-numpy
@@ -57,7 +57,7 @@
 	-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
 	-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \    #(путь к выравниванию контрольного эксперимента)
 	-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp,
-	# например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
+	#например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
 	-Ref /reference/directory \    #(из пункта 10)
 	-Peaks /output_path_to_peaks/PEAKS000000.bed \    #(из пункта 11)
 	-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
