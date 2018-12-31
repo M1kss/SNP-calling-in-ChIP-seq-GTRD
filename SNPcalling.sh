@@ -44,6 +44,11 @@ bash pre-process.sh $EXPNAME \
 	$FD \
 	false
 
+if [ $? != 0 ]; then
+    echo "Failed to pre-process exp"
+    exit 1
+fi
+
 bash pre-process.sh $CTRLNAME \
 	$CTRLPATH \
 	$PEAKS \
@@ -53,12 +58,21 @@ bash pre-process.sh $CTRLNAME \
 	$FD \
 	$WG
 
+if [ $? != 0 ]; then
+    echo "Failed to pre-process ctrl"
+    exit 1
+fi
 
 bash make_tables.sh $EXPNAME $CTRLNAME \
 	"$OUT/$EXPNAME.vcf" \
 	"$OUT/${CTRLNAME}.vcf" \
 	$OUT \
 	$FA
+
+if [ $? != 0 ]; then
+    echo "Failed to make tables"
+    exit 1
+fi
 
 rm "$OUT/${EXPNAME}_final.bam"
 rm "$OUT/${CTRLNAME}_final.bam"
