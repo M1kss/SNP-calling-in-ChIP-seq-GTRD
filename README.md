@@ -31,3 +31,19 @@
 		-WG (optional, whole-genome SNP-calling in ctrl)
 		
 Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией в директории /output/folder/name/for/ALIGNS000000_SNPs/
+
+#INSTALLATION INSTRUCTIONS:
+
+1) python3
+	python-numpy
+	python-matplotlib
+2) python2
+3) samtools
+4) bedtools
+5) bcftools
+6) java 8 (не выше и не ниже!)
+7) picard (https://github.com/broadinstitute/picard/releases/dow..)
+8) GATK (https://github.com/broadinstitute/gatk/releases/downl..)
+9) В файле Config.cfg указать путь куда скачан picard.jar и распакован gatk-package-4.0.x.0-local.jar, в JavaParameters = "" указать через пробел параметры и опции запуска java.
+
+10) Создание референсных файлов. 
