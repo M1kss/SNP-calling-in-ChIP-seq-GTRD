@@ -17,7 +17,7 @@
         -RefFolder /reference/directory
         -RefGenome /path/to/reference/genome.fasta
         
-Создаст normalized референсный геном, индекс и dict в папке /reference/directory
+Создаст normalized референсный геном, индекс и dict в папке /reference/directory/
 
 #SNPCALLING USAGE EXAMPLE:
 
@@ -30,4 +30,4 @@
 		-Out /output/folder/name/for/ALIGNS000000_SNPs \
 		-WG (optional, whole-genome SNP-calling in ctrl)
 		
-Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией
+Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией в директории /output/folder/name/for/ALIGNS000000_SNPs/
