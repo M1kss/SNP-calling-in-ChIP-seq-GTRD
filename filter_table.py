@@ -27,6 +27,6 @@ for line_r in table_pre:
 	elif line[9] == '0':
 		c01 += 1
 
-print('Skipped {} more gomozigous SNPs'.format(skipped))
+print('Skipped {} more homozigous SNPs'.format(skipped))
 
 print('{0} het SNPs in total. {1} of them present in both, {2} only in EXP, {3} only in CTRL.'.format(total, c11, c10, c01))
