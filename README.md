@@ -5,7 +5,7 @@
 		-gem /path/to/peaks/gem/PEAKS000000.interval \
 		-sissrs /path/to/peaks/sissrs/PEAKS000000.interval \
 		-cpics /path/to/peaks/cpics/PEAKS000000.interval \
-		-Out /output_path/PEAKS000000.bed
+		-Out /output_path_to_peaks/PEAKS000000.bed     #(/output_path_to_peaks/ must exist!!)
 		
 Создаст файл /output_path_to_peaks/PEAKS000000.bed
 требуются данные всех 4 коллеров
@@ -15,7 +15,7 @@
 
     bash create_reference.sh \
         -RefFolder /reference/directory
-        -RefGenome /path/to/reference/genome.fasta
+        -RefGenome /path/to/reference/genome.fasta    #(hg38)
         
 Создаст normalized референсный геном, индекс и dict в папке /reference/directory/
 
@@ -27,10 +27,10 @@
 		-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \
 		-Ref /reference/directory \
 		-Peaks /output_path_to_peaks/PEAKS000000.bed \
-		-Out /output/folder/name/for/ALIGNS000000_SNPs \
-		-WG (optional, whole-genome SNP-calling in ctrl)
+		-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!!)
+		-WG (optional, whole-genome SNP-calling in ctrl)      #(~2hrs for one dataset)
 		
-Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией в директории /output/folder/name/for/ALIGNS000000_SNPs/
+Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией в директории /output/folder/name/for/ALIGNS000000_SNPs/ (которую нужно предварительно создать, если её нет, название не имеет значения)
 
 #INSTALLATION INSTRUCTIONS:
 
@@ -46,4 +46,16 @@
 8) GATK (https://github.com/broadinstitute/gatk/releases/downl..)
 9) В файле Config.cfg указать путь куда скачан picard.jar и распакован gatk-package-4.0.x.0-local.jar, в JavaParameters = "" указать через пробел параметры и опции запуска java.
 
-10) Создание референсных файлов. 
+Для всех датасетов с одним и тем же референсным геномом:
+10) Запустить create_reference.sh по образцу выше, чтобы в директории -RefFolder создать необходимые файлы.
+
+Для каждого датасета:
+11) Запустить PEAKcalling.sh по образцу выше, чтобы в директории /output_path_to_peaks создать файл PEAKSхххххх.bed пиков с объедиением пиков четырех пикколеров.
+12) Запустить SNPcalling.sh с параметрами:
+	-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
+	-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \    #(путь к выравниванию контрольного эксперимента)
+	-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp,
+	# например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
+	-Ref /reference/directory \    #(из пункта 10)
+	-Peaks /output_path_to_peaks/PEAKS000000.bed \    #(из пункта 11)
+	-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
