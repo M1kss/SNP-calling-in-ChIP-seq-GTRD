@@ -1,4 +1,5 @@
 #PEAKCALLING USAGE EXAMPLE:
+
 	bash PEAKcalling.sh \
 		-macs /path/to/peaks/macs/PEAKS000000.interval \
 		-gem /path/to/peaks/gem/PEAKS000000.interval \
@@ -6,18 +7,20 @@
 		-cpics /path/to/peaks/cpics/PEAKS000000.interval \
 		-Out /output_path/PEAKS000000.bed
 		
-создаст файл /output_path_to_peaks/PEAKS000000.bed
+Создаст файл /output_path_to_peaks/PEAKS000000.bed
 требуются данные всех 4 коллеров
 
 
 #CREATE_REFERENCE USAGE EXAMPLE:
+
     bash create_reference.sh \
         -RefFolder /reference/directory
         -RefGenome /path/to/reference/genome.fasta
         
-создает normalized референсный геном, индекс и dict в папке /reference/directory
+Создаст normalized референсный геном, индекс и dict в папке /reference/directory/
 
 #SNPCALLING USAGE EXAMPLE:
+
 	bash SNPcalling.sh \
 		-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
 		-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \
@@ -27,4 +30,4 @@
 		-Out /output/folder/name/for/ALIGNS000000_SNPs \
 		-WG (optional, whole-genome SNP-calling in ctrl)
 		
-Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией
+Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией в директории /output/folder/name/for/ALIGNS000000_SNPs/
