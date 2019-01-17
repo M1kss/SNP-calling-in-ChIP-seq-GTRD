@@ -81,9 +81,13 @@ if [$WITHCTRL]; then
     		echo "Failed to make tables"
     		exit 1
 	fi
-else:
+else
+	python3 make_table_no_ctrl.py "$OUT/${EXPNAME}.vcf" "%OUT/${EXPNAME}_table.txt"
 	
-
+	if [ $? != 0 ]; then
+    		echo "Failed to make tables"
+    		exit 1
+	fi
 fi
 rm "$OUT/${EXPNAME}_final.bam"
 rm "$OUT/${CTRLNAME}_final.bam"
