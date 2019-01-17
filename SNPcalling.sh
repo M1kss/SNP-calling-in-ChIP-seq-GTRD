@@ -1,6 +1,10 @@
 #!/bin/bash
 
-WG=false
+
+WGC=false
+WGE=false
+WITHCTRL=false
+
 while [ "`echo $1 | cut -c1`" = "-" ]
 do
     case "$1" in
@@ -15,6 +19,7 @@ do
 		EXPNAME=${TMP%.*}
         	shift 2;;
 	-Ctrl) CTRL=$2
+		WITHCTRL=true
 		CTRLPATH=${CTRL%/*}
 		[ "$CTRLPATH" != "$CTRL" ] && T="${CTRL:${#CTRLPATH}}"
 		CTRLNAME=${T%.*}
@@ -23,7 +28,9 @@ do
               	shift 2;;
 	-VCF) VCF=$2
               	shift 2;;
-	-WG) WG=true
+	-WGE) WGE=true
+		shift 1;;
+	-WGC) WGC=true
 		shift 1;;
         *)
                 echo "There is no option $1"
@@ -42,38 +49,42 @@ bash pre-process.sh $EXPNAME \
 	$VCF \
 	$FA \
 	$FD \
-	false
+	$WGE
 
 if [ $? != 0 ]; then
     echo "Failed to pre-process exp"
     exit 1
 fi
+if [$WITHCTRL]; then
+	bash pre-process.sh $CTRLNAME \
+		$CTRLPATH \
+		$PEAKS \
+		$OUT \
+		$VCF \
+		$FA \
+		$FD \
+		$WGC
 
-bash pre-process.sh $CTRLNAME \
-	$CTRLPATH \
-	$PEAKS \
-	$OUT \
-	$VCF \
-	$FA \
-	$FD \
-	$WG
+		if [ $? != 0 ]; then
+    			echo "Failed to pre-process ctrl"
+    			exit 1
+		fi
 
-if [ $? != 0 ]; then
-    echo "Failed to pre-process ctrl"
-    exit 1
+	bash make_tables.sh $EXPNAME $CTRLNAME \
+		"$OUT/$EXPNAME.vcf" \
+		"$OUT/${CTRLNAME}.vcf" \
+		$OUT \
+		$FA
+	
+
+	if [ $? != 0 ]; then
+    		echo "Failed to make tables"
+    		exit 1
+	fi
+else:
+	
+
 fi
-
-bash make_tables.sh $EXPNAME $CTRLNAME \
-	"$OUT/$EXPNAME.vcf" \
-	"$OUT/${CTRLNAME}.vcf" \
-	$OUT \
-	$FA
-
-if [ $? != 0 ]; then
-    echo "Failed to make tables"
-    exit 1
-fi
-
 rm "$OUT/${EXPNAME}_final.bam"
 rm "$OUT/${CTRLNAME}_final.bam"
 rm "$OUT/${EXPNAME}_final.bai"
