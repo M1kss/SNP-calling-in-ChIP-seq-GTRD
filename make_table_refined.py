@@ -51,7 +51,7 @@ def read_from_file(vcf, out):
 read_from_file(vcf, exp)
 read_from_file(vcfctrl, ctrl)
 
-skipped = 0;
+skipped = 0
 
 for (chr, pos) in exp.keys():
 	(ER, EA, NAME, REF, ALT) = exp[(chr, pos)]
