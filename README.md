@@ -1,4 +1,4 @@
-#USAGE EXAMPLES:
+# USAGE EXAMPLES:
 ### PEAKCALLING
 
 	bash PEAKcalling.sh \
@@ -12,7 +12,7 @@
 требуются данные всех 4 коллеров
 
 
-# CREATE_REFERENCE
+### CREATE_REFERENCE
 
     bash create_reference.sh \
         -RefFolder /reference/directory
@@ -20,7 +20,7 @@
         
 Создаст normalized референсный геном, индекс и dict в папке /reference/directory/
 
-# SNPCALLING
+### SNPCALLING
 
 	bash SNPcalling.sh \
 		-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
