@@ -23,7 +23,7 @@
 
 	bash SNPcalling.sh \
 		-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
-		-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \ #(can be used without ctrl)
+		-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \ #(optional)
 		-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \
 		-Ref /reference/directory \
 		-Peaks /output_path_to_peaks/PEAKS000000.bed \
