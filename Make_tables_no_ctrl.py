@@ -1,10 +1,9 @@
 import sys
 
 
-def write10(chr, pos, NAME, REF, ALT, ER, EA, output10, bed10):
+def write10(chr, pos, NAME, REF, ALT, ER, EA, output10):
     ER = str(ER)
     EA = str(EA)
-    bed10.write(chr + '\t' + str(int(pos) - 1) + '\t' + pos + '\n')
     output10.write(
         chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + ER + '\t' + EA + '\t' + '.' + '\t' + '.' + '\t' + '1' + '\t' + '0' + '\n')
 
@@ -43,11 +42,6 @@ for (chr, pos) in exp.keys():
         skipped += 1
         continue
     else:
-        write10(chr, pos, NAME, REF, ALT, ER, EA, output10, bed10)
-
-for (chr, pos) in ctrl.keys():
-    (CR, CA, NAME, REF, ALT) = ctrl[(chr, pos)]
-    # del ctrl[(chr, pos)]
-    write01(chr, pos, NAME, REF, ALT, CR, CA, output01, bed01)
+        write10(chr, pos, NAME, REF, ALT, ER, EA, output10)
 
 print('Skipped {} homozigous SNPs'.format(skipped))

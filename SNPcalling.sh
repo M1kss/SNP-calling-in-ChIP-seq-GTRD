@@ -55,7 +55,7 @@ if [ $? != 0 ]; then
     echo "Failed to pre-process exp"
     exit 1
 fi
-if [$WITHCTRL]; then
+if $WITHCTRL; then
 	bash pre-process.sh $CTRLNAME \
 		$CTRLPATH \
 		$PEAKS \
@@ -82,16 +82,22 @@ if [$WITHCTRL]; then
     		exit 1
 	fi
 else
-	python3 make_table_no_ctrl.py "$OUT/${EXPNAME}.vcf" "%OUT/${EXPNAME}_table.txt"
+	python3 Make_tables_no_ctrl.py "$OUT/${EXPNAME}.vcf" "$OUT/${EXPNAME}_table.txt"
 	
 	if [ $? != 0 ]; then
     		echo "Failed to make tables"
     		exit 1
 	fi
 fi
+
 rm "$OUT/${EXPNAME}_final.bam"
-rm "$OUT/${CTRLNAME}_final.bam"
+if $WITHCTRL; then
+	rm "$OUT/${CTRLNAME}_final.bam"
+fi
+
 rm "$OUT/${EXPNAME}_final.bai"
-rm "$OUT/${CTRLNAME}_final.bai"
+if $WITHCTRL; then
+	rm "$OUT/${CTRLNAME}_final.bai"
+fi
 
 exit 0
