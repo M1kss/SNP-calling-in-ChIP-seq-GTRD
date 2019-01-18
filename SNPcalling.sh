@@ -55,7 +55,7 @@ if [ $? != 0 ]; then
     echo "Failed to pre-process exp"
     exit 1
 fi
-if [$WITHCTRL]; then
+if $WITHCTRL; then
 	bash pre-process.sh $CTRLNAME \
 		$CTRLPATH \
 		$PEAKS \
