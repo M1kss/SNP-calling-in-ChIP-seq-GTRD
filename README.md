@@ -1,5 +1,5 @@
 # USAGE EXAMPLES:
-### PEAKCALLING
+## PEAKCALLING
 
 	bash PEAKcalling.sh \
 		-macs /path/to/peaks/macs/PEAKS000000.interval \
@@ -12,7 +12,7 @@
 требуются данные всех 4 коллеров
 
 
-### CREATE_REFERENCE
+## CREATE_REFERENCE
 
     bash create_reference.sh \
         -RefFolder /reference/directory
@@ -20,7 +20,7 @@
         
 Создаст normalized референсный геном, индекс и dict в папке /reference/directory/
 
-### SNPCALLING
+## SNPCALLING
 
 	bash SNPcalling.sh \
 		-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
@@ -48,11 +48,11 @@
 8) GATK (https://github.com/broadinstitute/gatk/releases/downl..)
 9) В файле Config.cfg указать путь куда скачан picard.jar и распакован gatk-package-4.0.x.0-local.jar, в JavaParameters = "" указать через пробел параметры и опции запуска java.
 
-## Для всех датасетов с одним и тем же референсным геномом:
+### Для всех датасетов с одним и тем же референсным геномом:
 
 10) Запустить create_reference.sh по образцу выше, чтобы в директории -RefFolder создать необходимые файлы.
 
-## Для каждого датасета:
+### Для каждого датасета:
 
 11) Запустить PEAKcalling.sh по образцу выше, чтобы в директории /output_path_to_peaks создать файл PEAKSхххххх.bed пиков с объедиением пиков четырех пикколеров.
 12) Запустить SNPcalling.sh с параметрами:
@@ -60,7 +60,7 @@
 	-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
 	
 	-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \    #(путь к выравниванию контрольного эксперимента)
-	# если контрольного эксперимента нет запускать с флагом -WGE
+		#если контрольного эксперимента нет запускать с флагом -WGE
 	
 	-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp,
 	#например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
