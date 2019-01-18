@@ -20,7 +20,7 @@ source ./Config.cfg
 
 java $JavaParameters -jar $PICARD \
 	NormalizeFasta \
-	I=REF \
+	I=$REF \
 	O="$OUT/genome-norm.fasta"
 
 if [ $? != 0 ]; then
