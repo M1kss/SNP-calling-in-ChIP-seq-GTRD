@@ -12,7 +12,6 @@ WG=$8
 
 source ./Config.cfg
 
-echo "$BAMPATH$BAMNAME.bai"
 if [ ! -f $BAMPATH$BAMNAME.bam.bai ]; then
 	echo "Index file for $BAMNAME not found, indexing.."
 	samtools index "$BAMPATH/$BAMNAME.bam"
