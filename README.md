@@ -36,26 +36,36 @@
 
 # INSTALLATION INSTRUCTIONS:
 
-1) python3
+1. python3
 	python-numpy
 	python-matplotlib
-2) python2
-3) samtools
-4) bedtools
-5) bcftools
-6) java 8 (не выше и не ниже!)
-7) picard (https://github.com/broadinstitute/picard/releases/dow..)
-8) GATK (https://github.com/broadinstitute/gatk/releases/downl..)
-9) В файле Config.cfg указать путь куда скачан picard.jar и распакован gatk-package-4.0.x.0-local.jar, в JavaParameters = "" указать через пробел параметры и опции запуска java.
+2. python2
+3. samtools
+4. bedtools
+5. bcftools
+6. java 8 (не выше и не ниже!)
+7. picard (https://github.com/broadinstitute/picard/releases/dow..)
+8. GATK (https://github.com/broadinstitute/gatk/releases/downl..)
+9. В файле Config.cfg указать путь куда скачан picard.jar и распакован gatk-package-4.0.x.0-local.jar, в JavaParameters = "" указать через пробел параметры и опции запуска java (по умолчанию оставить -Xmx12G)
 
 ### Для всех датасетов с одним и тем же референсным геномом:
 
-10) Запустить create_reference.sh по образцу выше, чтобы в директории -RefFolder создать необходимые файлы.
+10. Запустить create_reference.sh по образцу выше, чтобы в заранее созданной директории -RefFolder создать необходимые файлы.
 
 ### Для каждого датасета:
 
-11) Запустить PEAKcalling.sh по образцу выше, чтобы в директории /output_path_to_peaks создать файл PEAKSхххххх.bed пиков с объедиением пиков четырех пикколеров.
-12) Запустить SNPcalling.sh с параметрами:
+11. Запустить PEAKcalling.sh по образцу выше, чтобы в директории /output_path_to_peaks создать файл PEAKSхххххх.bed пиков с объедиением пиков четырех пикколеров.
+12. Запустить SNPcalling.sh с параметрами:
+	12.1 При наличии контрольного эксперимента
+	bash SNPcalling.sh \
+		-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
+		-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \ #(optional)
+		-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \
+		-Ref /reference/directory \
+		-Peaks /output_path_to_peaks/PEAKS000000.bed \
+		-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!!)
+		-WGC (optional, whole-genome SNP-calling in ctrl)  \    #(~2hrs for one dataset)
+		-WGE (optional, whole-genome SNP-calling in exp)  #(~2hrs for one dataset)
 
 	-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
 	
