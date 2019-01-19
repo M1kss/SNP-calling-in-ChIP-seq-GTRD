@@ -59,15 +59,15 @@
 
 	12.1 При наличии контрольного эксперимента
 
-bash SNPcalling.sh \
-	-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
-	-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \ #(optional)
-	-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \
-	-Ref /reference/directory \
-	-Peaks /output_path_to_peaks/PEAKS000000.bed \
-	-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!!)
-	-WGC (optional, whole-genome SNP-calling in ctrl)  \    #(~2hrs for one dataset)
-	-WGE (optional, whole-genome SNP-calling in exp)  #(~2hrs for one dataset)
+	bash SNPcalling.sh \
+		-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
+		-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \ #(optional)
+		-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \
+		-Ref /reference/directory \
+		-Peaks /output_path_to_peaks/PEAKS000000.bed \
+		-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!!)
+		-WGC (optional, whole-genome SNP-calling in ctrl)  \    #(~2hrs for one dataset)
+		-WGE (optional, whole-genome SNP-calling in exp)  #(~2hrs for one dataset)
 
 	-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
 	
