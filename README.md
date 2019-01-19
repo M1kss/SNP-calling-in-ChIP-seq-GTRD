@@ -15,7 +15,7 @@
 ## CREATE_REFERENCE
 
     bash create_reference.sh \
-        -RefFolder /reference/directory
+        -RefFolder /reference/directory \
         -RefGenome /path/to/reference/genome.fasta    #(hg38)
         
 Создаст normalized референсный геном, индекс и dict в папке /reference/directory/
