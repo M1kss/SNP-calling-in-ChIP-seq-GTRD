@@ -60,25 +60,18 @@
 	12.1 При наличии контрольного эксперимента
 
 		bash SNPcalling.sh \
-			-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
-			-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \ #(optional)
-			-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \
-			-Ref /reference/directory \
-			-Peaks /output_path_to_peaks/PEAKS000000.bed \
-			-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!!)
-			-WGC (optional, whole-genome SNP-calling in ctrl)  \    #(~2hrs for one dataset)
-			-WGE (optional, whole-genome SNP-calling in exp)  #(~2hrs for one dataset)
+			-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
+			-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \    #(путь к выравниванию контрольного эксперимента)
+			-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp, например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
+			-Ref /reference/directory \    #(из пункта 10)
+			-Peaks /output_path_to_peaks/PEAKS000000.bed \    #(из пункта 11)
+			-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
+	12.2 В отсутствии контрольного эксперимента - добавить флаг -WGE
 
-	-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
-	
-	-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \    #(путь к выравниванию контрольного эксперимента)
-		#если контрольного эксперимента нет запускать с флагом -WGE
-	
-	-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp,
-	#например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
-	
-	-Ref /reference/directory \    #(из пункта 10)
-	
-	-Peaks /output_path_to_peaks/PEAKS000000.bed \    #(из пункта 11)
-	
-	-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
+		bash SNPcalling.sh \
+			-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
+			-WGE
+			-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp, например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
+			-Ref /reference/directory \    #(из пункта 10)
+			-Peaks /output_path_to_peaks/PEAKS000000.bed \    #(из пункта 11)
+			-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
