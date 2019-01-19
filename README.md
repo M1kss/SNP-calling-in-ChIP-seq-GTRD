@@ -57,7 +57,7 @@
 11. Запустить PEAKcalling.sh по образцу выше, чтобы в директории /output_path_to_peaks создать файл PEAKSхххххх.bed пиков с объедиением пиков четырех пикколеров.
 12. Запустить SNPcalling.sh с параметрами:
 
-	12.1 При наличии контрольного эксперимента
+12.1 При наличии контрольного эксперимента
 
 	bash SNPcalling.sh \
 		-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \
