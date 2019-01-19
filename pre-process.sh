@@ -116,12 +116,12 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-rm "$OUT/${BAMNAME}_formated.bam"
-rm "$OUT/${BAMNAME}_ready.bam"
 rm "$OUT/${BAMNAME}_metrics.txt"
-rm "$OUT/${BAMNAME}_chop.bam"
 rm "$OUT/${BAMNAME}.table"
 rm "$OUT/${BAMNAME}_Peaks.interval_list"
-#rm "$OUT/${BAMNAME}_ready.bam.bai"
+
+if [ -f $OUT/${BAMNAME}_ready.bam.bai ]; then
+    rm "$OUT/${BAMNAME}_ready.bam.bai"
+fi
 
 exit 0

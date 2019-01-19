@@ -90,14 +90,32 @@ else
 	fi
 fi
 
+bam_size=0
+
+bam_size=$(($bam_size+$(wc -c <"$OUT/${EXPNAME}_formated.bam")))
+bam_size=$(($bam_size+$(wc -c <"$OUT/${EXPNAME}_ready.bam")))
+bam_size=$(($bam_size+$(wc -c <"$OUT/${EXPNAME}_chop.bam")))
+bam_size=$(($bam_size+$(wc -c <"$OUT/${EXPNAME}_final.bam")))
+
 rm "$OUT/${EXPNAME}_final.bam"
+rm "$OUT/${EXPNAME}_final.bai"
+rm "$OUT/${EXPNAME}_chop.bam"
+rm "$OUT/${EXPNAME}_ready.bam"
+rm "$OUT/${EXPNAME}_formated.bam"
+
 if $WITHCTRL; then
+    bam_size=$($bam_size+$(wc -c <"$OUT/${CTRL}_formated.bam"))
+    bam_size=$($bam_size+$(wc -c <"$OUT/${CTRL}_ready.bam"))
+    bam_size=$($bam_size+$(wc -c <"$OUT/${CTRL}_chop.bam"))
+    bam_size=$($bam_size+$(wc -c <"$OUT/${CTRL}_final.bam"))
+
 	rm "$OUT/${CTRLNAME}_final.bam"
+	rm "$OUT/${CTRLNAME}_final.bai"
+	rm "$OUT/${CTRL}_chop.bam"
+	rm "$OUT/${CTRL}_ready.bam"
+	rm "$OUT/${CTRL}_formated.bam"
 fi
 
-rm "$OUT/${EXPNAME}_final.bai"
-if $WITHCTRL; then
-	rm "$OUT/${CTRLNAME}_final.bai"
-fi
+echo "Total intermediate .bam size: $bam_size"
 
 exit 0
