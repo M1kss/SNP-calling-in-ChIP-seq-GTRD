@@ -76,7 +76,7 @@
 			-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
 
 # Output format:
-Основной файл: ALIGNS039504_table.txt, формат следующий:
+Основной файл: ALIGNS039504_table_annotated.txt, формат следующий:
 
 CHR POS ID REF ALT QUAL_EXP QUAL_CTRL EXP_REF EXP_ALT CTRL_REF CTRL_ALT IN_EXP IN_CTRL IN_MACS IN_SISSRS IN_CPICS IN_GEM
 
