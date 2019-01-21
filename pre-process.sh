@@ -1,14 +1,13 @@
 #!/bin/bash
 
 
-VCF=$5
-FA=$6
-FD=$7
+VCF=$4
+FA=$5
+FD=$6
 BAMNAME=$1
 BAMPATH=$2
-BED=$3
-OUT=$4
-WG=$8
+OUT=$3
+WG=$7
 
 source ./Config.cfg
 
@@ -82,16 +81,17 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-java $JavaParameters -jar $PICARD \
-	BedToIntervalList \
-	I=$BED \
-	O="$OUT/${BAMNAME}_Peaks.interval_list" \
-	SD=$FD
+#if 
+#java $JavaParameters -jar $PICARD \
+#	BedToIntervalList \
+#	I=$BED \
+#	O="$OUT/${BAMNAME}_Peaks.interval_list" \
+#	SD=$FD
 
-if [ $? != 0 ]; then
-    echo "Failed to convert bed to IntervalList"
-    exit 1
-fi
+#if [ $? != 0 ]; then
+#    echo "Failed to convert bed to IntervalList"
+#    exit 1
+#fi
 
 if $WG; then
 		java $JavaParameters -jar $GATK \
@@ -101,13 +101,14 @@ if $WG; then
 		--dbsnp $VCF \
 		-O "$OUT/${BAMNAME}.vcf" 
 	else
-		java $JavaParameters -jar $GATK \
-		HaplotypeCaller \
-		-R $FA \
-		-I "$OUT/${BAMNAME}_final.bam" \
-		--dbsnp $VCF \
-		-O "$OUT/${BAMNAME}.vcf" \
-		-L "$OUT/${BAMNAME}_Peaks.interval_list"
+		echo "cant be done"
+		#java $JavaParameters -jar $GATK \
+		#HaplotypeCaller \
+		#-R $FA \
+		#-I "$OUT/${BAMNAME}_final.bam" \
+		#--dbsnp $VCF \
+		#-O "$OUT/${BAMNAME}.vcf" \
+		#-L "$OUT/${BAMNAME}_Peaks.interval_list"
 fi
 
 if [ $? != 0 ]; then
