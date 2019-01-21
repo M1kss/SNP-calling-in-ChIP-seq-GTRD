@@ -1,11 +1,10 @@
 import sys
 
 
-def write10(chr, pos, NAME, REF, ALT, ER, EA, output10):
+def write10(chr, pos, NAME, REF, ALT, ER, EA, QE, output10):
     ER = str(ER)
     EA = str(EA)
-    output10.write(
-        chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + ER + '\t' + EA + '\t' + '.' + '\t' + '.' + '\t' + '1' + '\t' + '0' + '\n')
+    output10.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + QE + '\t' + '0' + '\t' + ER + '\t' + EA + '\t' + '.' + '\t' + '.' + '\t' + '1' + '\t' + '0' + '\n')
 
 
 vcf = open(sys.argv[1], 'r')
@@ -28,7 +27,8 @@ def read_from_file(vcf, out):
                 NAME = line[2]
                 REF = line[3]
                 ALT = line[4]
-                out[(line[0], line[1])] = (R, A, NAME, REF, ALT)
+                QUAL = line[5]
+                out[(line[0], line[1])] = (R, A, NAME, REF, ALT, QUAL)
 
 
 read_from_file(vcf, exp)
@@ -36,12 +36,12 @@ read_from_file(vcf, exp)
 skipped = 0
 
 for (chr, pos) in exp.keys():
-    (ER, EA, NAME, REF, ALT) = exp[(chr, pos)]
+    (ER, EA, NAME, REF, ALT, QE) = exp[(chr, pos)]
 
     if ER == 0:
         skipped += 1
         continue
     else:
-        write10(chr, pos, NAME, REF, ALT, ER, EA, output10)
+        write10(chr, pos, NAME, REF, ALT, ER, EA, QE, output10)
 
 print('Skipped {} homozigous SNPs'.format(skipped))

@@ -23,12 +23,12 @@ def write10(line10, tableline10, output10):
 		return False
 
 def write_line10(tableline, R, A, output):
-	output.write(tableline[0] + '\t' + tableline[1] + '\t' + tableline[2] + '\t' + tableline[3] + '\t' + tableline[4] + '\t' + tableline[5] + '\t' + tableline[6] + '\t' + R + '\t' + A + '\t' + tableline[9] + '\t' + tableline[10] + '\n')
+	output.write(tableline[0] + '\t' + tableline[1] + '\t' + tableline[2] + '\t' + tableline[3] + '\t' + tableline[4] + '\t' + tableline[5] + '\t' + tableline[6] + '\t' + tableline[7] + '\t' + tableline[8] + '\t' + R + '\t' + A + '\t' + tableline[11] + '\t' + tableline[12] + '\n')
 
 def write_line01(tableline, R, A, output):
-	output.write(tableline[0] + '\t' + tableline[1] + '\t' + tableline[2] + '\t' + tableline[3] + '\t' + tableline[4] + '\t' + R + '\t' + A + '\t' + tableline[7] + '\t' + tableline[8] + '\t' + tableline[9] + '\t' + tableline[10] + '\n')
+	output.write(tableline[0] + '\t' + tableline[1] + '\t' + tableline[2] + '\t' + tableline[3] + '\t' + tableline[4] + '\t' + tableline[5] + '\t' + tableline[6] + '\t' + R + '\t' + A + '\t' + tableline[9] + '\t' + tableline[10] + '\t' + tableline[11] + '\t' + tableline[12] + '\n')
 
-def mainichi():
+def main():
 	pile01 = open(sys.argv[1], 'r')
 	pile10 = open(sys.argv[2], 'r')
 	input10 = open(sys.argv[4], 'r')
@@ -67,7 +67,7 @@ def mainichi():
 			write_line10(tableline10, '0', '0', output10)
 			tableline10 = input10.readline().split()
 
-mainichi()
+main()
 		
 		
 		

@@ -13,18 +13,18 @@ skipped = 0
 
 for line_r in table_pre:
 	line = line_r.split()
-	if int(line[5]) == 0 and int(line[7]) == 0:
+	if int(line[7]) == 0 and int(line[9]) == 0:
 		skipped += 1
 		continue
 	
 	total += 1
 	table.write(line_r)
 	
-	if line[9] == line[10]:
+	if line[11] == line[12]:
 		c11 += 1
-	elif line[10] == '0':
+	elif line[12] == '0':
 		c10 += 1
-	elif line[9] == '0':
+	elif line[11] == '0':
 		c01 += 1
 
 print('Skipped {} more homozigous SNPs'.format(skipped))

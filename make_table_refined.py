@@ -1,24 +1,24 @@
 
 import sys
 
-def write01(chr, pos, NAME, REF, ALT, CR, CA, output01, bed01):
+def write01(chr, pos, NAME, REF, ALT, CR, CA, QC, output01, bed01):
 	CR = str(CR)
 	CA = str(CA)
 	bed01.write(chr+'\t'+str(int(pos)-1)+'\t'+ pos +'\n')
-	output01.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + '.' + '\t' + '.' + '\t' + CR + '\t' + CA + '\t' + '0' + '\t' + '1' + '\n')
+	output01.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + '0' + '\t' + QC + '\t' + '.' + '\t' + '.' + '\t' + CR + '\t' + CA + '\t' + '0' + '\t' + '1' + '\n')
 
-def write10(chr, pos, NAME, REF, ALT, ER, EA, output10, bed10):
+def write10(chr, pos, NAME, REF, ALT, ER, EA, QE, output10, bed10):
 	ER = str(ER)
 	EA = str(EA)
 	bed10.write(chr+'\t'+str(int(pos)-1)+'\t'+ pos +'\n')
-	output10.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + ER + '\t' + EA + '\t' + '.' + '\t' + '.' + '\t' + '1' + '\t' + '0' + '\n')
+	output10.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + QE + '\t' + '0' + '\t' + ER + '\t' + EA + '\t' + '.' + '\t' + '.' + '\t' + '1' + '\t' + '0' + '\n')
 
-def write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, output11):
+def write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, QE, QC output11):
 	CR = str(CR)
 	CA = str(CA)
 	ER = str(ER)
 	EA = str(EA)
-	output11.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + ER + '\t' + EA + '\t' + CR + '\t' + CA + '\t' + '1' + '\t' + '1' + '\n')
+	output11.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + QE + '\t' + QC + '\t' + ER + '\t' + EA + '\t' + CR + '\t' + CA + '\t' + '1' + '\t' + '1' + '\n')
 
 
 vcf = open(sys.argv[1], 'r')
@@ -46,7 +46,8 @@ def read_from_file(vcf, out):
 				NAME = line[2]
 				REF = line[3]
 				ALT = line[4]
-				out[(line[0], line[1])] = (R, A, NAME, REF, ALT)
+				QUAL = line[5]
+				out[(line[0], line[1])] = (R, A, NAME, REF, ALT, QUAL)
 
 read_from_file(vcf, exp)
 read_from_file(vcfctrl, ctrl)
@@ -54,13 +55,14 @@ read_from_file(vcfctrl, ctrl)
 skipped = 0
 
 for (chr, pos) in exp.keys():
-	(ER, EA, NAME, REF, ALT) = exp[(chr, pos)]
+	(ER, EA, NAME, REF, ALT, QE) = exp[(chr, pos)]
 	#del exp[(chr, pos)]
 	
 	Cpair = ctrl.pop((chr, pos), None)	
 	if Cpair:
 		CR = Cpair[0]
 		CA = Cpair[1]
+		QC = Cpair[5]
 		if Cpair[2] != NAME or Cpair[4] != ALT:
 			print('Something strange is happening! Different SNPs on the same coordinate!')
 		if Cpair[3] != REF:
@@ -68,13 +70,13 @@ for (chr, pos) in exp.keys():
 		if CR == 0 and ER == 0:
 			skipped += 1
 			continue
-		write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, output11)
+		write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, QE, QC output11)
 	else:
-		write10(chr, pos, NAME, REF, ALT, ER, EA, output10, bed10)
+		write10(chr, pos, NAME, REF, ALT, ER, EA, QE, output10, bed10)
 	
 for (chr, pos) in ctrl.keys():
-	(CR, CA, NAME, REF, ALT) = ctrl[(chr, pos)]
+	(CR, CA, NAME, REF, ALT, QC) = ctrl[(chr, pos)]
 	#del ctrl[(chr, pos)]
-	write01(chr, pos, NAME, REF, ALT, CR, CA, output01, bed01)
+	write01(chr, pos, NAME, REF, ALT, CR, CA, QC, output01, bed01)
 
 print('Skipped {} homozigous SNPs'.format(skipped))
