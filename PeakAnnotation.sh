@@ -1,8 +1,8 @@
 GETNAME(){
-local var=$1
-local varpath=${var%/*}
-[ "$varpath" != "$var" ] && local vartmp="${var:${#varpath}}"
-echo ${vartmp%.*}
+	local var=$1
+	local varpath=${var%/*}
+	[ "$varpath" != "$var" ] && local vartmp="${var:${#varpath}}"
+		echo ${vartmp%.*}
 }
 
 
