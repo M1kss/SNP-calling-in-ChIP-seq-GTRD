@@ -15,7 +15,7 @@
 		-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \ #(optional)
 		-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \
 		-Ref /reference/directory \
-		-macs /path/to/peaks/macs/PEAKS000000.interval \ #(optional, at least one peak caller data must be presented)
+		-macs /path/to/peaks/macs/PEAKS000000.interval \ #(optional)
 		-gem /path/to/peaks/gem/PEAKS000000.interval \ #(optional)
 		-sissrs /path/to/peaks/sissrs/PEAKS000000.interval \ #(optional)
 		-cpics /path/to/peaks/cpics/PEAKS000000.interval \ #(optional)
