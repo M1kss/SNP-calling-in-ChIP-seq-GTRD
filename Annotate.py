@@ -59,6 +59,7 @@ if __name__ == "__main__":
 			while write_peak(in_line, peak_line, output, gem):
 				in_line = input.readline().split()
 			Write(in_line, '0', output)
+			in_line = input.readline().split()
 	
 	def add_zeros(output):
 		for line in output:
