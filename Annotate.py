@@ -32,8 +32,9 @@ def write_peak(in_line, peak_line, output, gem=False):
 	else:
 		return False
 	
-def add_caller(caller, output, gem=False):
-	input = open(sys.argv[1], "r")
+def add_caller(caller, infile, outfile, gem=False):
+	input = open(infile, "r")
+	output = open(outfile, "w")
 		
 	in_line = input.readline().split()
 		
@@ -51,13 +52,19 @@ def add_caller(caller, output, gem=False):
 		Write(in_line, '0', output)
 		in_line = input.readline().split()
 	input.close()
+	output.close()
 	
-def add_zeros(output):
-	for line in output:
+def add_zeros(infile, outfile):
+	input = open(infile, "r")
+	output = open(outfile, "w")
+	for line in input:
 		output.write(line[:-1] + '\t' + '0' + '\n')
+	output.close()
+	output.close()
 
 if __name__ == "__main__":
-	output = open(sys.argv[10],"w")
+	o = sys.argv[10]
+	i = sys.argv[1]
 	
 	withmacs = sys.argv[6]
 	withsissrs = sys.argv[7]
@@ -66,24 +73,24 @@ if __name__ == "__main__":
 	
 	if withmacs:
 		macs = open(sys.argv[2], "r")
-		add_caller(macs, output)
+		add_caller(macs, i, o+".m.txt")
 	else:
-		add_zeros(output)
+		add_zeros(i, o+".m.txt")
 
 	if withsissrs:
 		sissrs = open(sys.argv[3], "r")
-		add_caller(sissrs, output)
+		add_caller(sissrs, o+".m.txt", o+".s.txt")
 	else:
-		add_zeros(output)
+		add_zeros(o+".m.txt", o+".s.txt")
 	
 	if withcpics:
 		cpics = open(sys.argv[4], "r")
-		add_caller(cpics, output)
+		add_caller(cpics, o+".s.txt", o+".c.txt")
 	else:
-		add_zeros(output)
+		add_zeros(o+".s.txt", o+".c.txt")
 	
 	if withgem:
 		gem = open(sys.argv[5], "r")
-		add_caller(gem, output, gem=True)
+		add_caller(gem, o+".c.txt", o, gem=True)
 	else:
-		add_zeros(output)
+		add_zeros(o+".c.txt", o)
