@@ -61,6 +61,7 @@
 
 		bash SNPcalling.sh \
 		    	-WGC \
+			-WGE \
 			-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
 			-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \    #(путь к выравниванию контрольного эксперимента)
 			-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp, например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
@@ -77,3 +78,13 @@
 			-Ref /reference/directory \    #(из пункта 10)
 			-Peaks /output_path_to_peaks/PEAKS000000.bed \    #(из пункта 11)
 			-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
+
+# Output format:
+Основной файл: ALIGNS039504_table.txt, формат следующий:
+CHR POS ID REF ALT EXP_REF EXP_ALT CTRL_REF CTRL_ALT IN_EXP IN_CTRL
+Первые 5 полей аналогичны vcf
+EXP_REF, CTRL_ALT - число ридов, выровненных в опыте на реф/альт аллель
+CTRL_REF, CTRL_ALT - то же, для контроля
+IN_EXP, IN_ALT - 0 или 1 - отсутствие или присутствие соответственно в опыте или контроле
+
+Дополнительные файлы: original VCF-s and indexing
