@@ -58,6 +58,7 @@ if __name__ == "__main__":
 		while in_line:
 			Write(in_line, '0', output)
 			in_line = input.readline().split()
+		input.close()
 	
 	def add_zeros(output):
 		for line in output:
