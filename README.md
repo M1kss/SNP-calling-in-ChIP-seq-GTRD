@@ -1,16 +1,4 @@
 # USAGE EXAMPLES:
-## PEAKCALLING
-
-	bash PEAKcalling.sh \
-		-macs /path/to/peaks/macs/PEAKS000000.interval \
-		-gem /path/to/peaks/gem/PEAKS000000.interval \
-		-sissrs /path/to/peaks/sissrs/PEAKS000000.interval \
-		-cpics /path/to/peaks/cpics/PEAKS000000.interval \
-		-Out /output_path_to_peaks/PEAKS000000.bed     #(/output_path_to_peaks/ must exist!!)
-		
-Создаст файл /output_path_to_peaks/PEAKS000000.bed
-требуются данные всех 4 коллеров
-
 
 ## CREATE_REFERENCE
 
@@ -27,12 +15,15 @@
 		-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \ #(optional)
 		-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \
 		-Ref /reference/directory \
-		-Peaks /output_path_to_peaks/PEAKS000000.bed \
+		-macs /path/to/peaks/macs/PEAKS000000.interval \ #(optional, at least one peak caller data must be presented)
+		-gem /path/to/peaks/gem/PEAKS000000.interval \ #(optional)
+		-sissrs /path/to/peaks/sissrs/PEAKS000000.interval \ #(optional)
+		-cpics /path/to/peaks/cpics/PEAKS000000.interval \ #(optional)
 		-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!!)
 		-WGC (optional, whole-genome SNP-calling in ctrl)  \    #(~2hrs for one dataset)
 		-WGE (optional, whole-genome SNP-calling in exp)  #(~2hrs for one dataset)
 		
-Создаст сводную таблицу ALIGNS000000.table и несколько vcf файлов с дополнительной информацией в директории /output/folder/name/for/ALIGNS000000_SNPs/ (которую нужно предварительно создать, если её нет, название не имеет значения)
+Создаст сводную таблицу ALIGNS000000_table_annotated.txt и несколько vcf файлов с дополнительной информацией в директории /output/folder/name/for/ALIGNS000000_SNPs/ (которую нужно предварительно создать, если её нет, название не имеет значения)
 
 # INSTALLATION INSTRUCTIONS:
 
@@ -54,10 +45,9 @@
 
 ### Для каждого датасета:
 
-11. Запустить PEAKcalling.sh по образцу выше, чтобы в директории /output_path_to_peaks создать файл PEAKSхххххх.bed пиков с объедиением пиков четырех пикколеров.
-12. Запустить SNPcalling.sh с параметрами:
+11. Запустить SNPcalling.sh с параметрами:
 
-	12.1 При наличии контрольного эксперимента
+	11.1 При наличии контрольного эксперимента
 
 		bash SNPcalling.sh \
 		    	-WGC \
@@ -66,23 +56,30 @@
 			-Ctrl /path/to/control/alignment/sorted/ALIGNS000001.bam \    #(путь к выравниванию контрольного эксперимента)
 			-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp, например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
 			-Ref /reference/directory \    #(из пункта 10)
-			-Peaks /output_path_to_peaks/PEAKS000000.bed \    #(из пункта 11)
+			-macs /path/to/peaks/macs/PEAKS000000.interval \
+			-gem /path/to/peaks/gem/PEAKS000000.interval \
+			-sissrs /path/to/peaks/sissrs/PEAKS000000.interval \
+			-cpics /path/to/peaks/cpics/PEAKS000000.interval \
 			-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
 	
-	12.2 В отсутствии контрольного эксперимента
+	11.2 В отсутствии контрольного эксперимента
 
 		bash SNPcalling.sh \
-			-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
 			-WGE \
+			-Exp /path/to/experiment/alignment/sorted/ALIGNS000000.bam  \    #(путь к выравниванию эксперимента)
 			-VCF /path/to/dbsnp-vcf/common_all_20180418.vcf \    #(путь к последнему vcf dbsnp, например, ftp://ftp.ncbi.nih.gov/snp/pre_build152/organisms/human_9606_b151_GRCh38p7/VCF/GATK/00-common_all.vcf.gz)
 			-Ref /reference/directory \    #(из пункта 10)
-			-Peaks /output_path_to_peaks/PEAKS000000.bed \    #(из пункта 11)
+			-macs /path/to/peaks/macs/PEAKS000000.interval \
+			-gem /path/to/peaks/gem/PEAKS000000.interval \
+			-sissrs /path/to/peaks/sissrs/PEAKS000000.interval \
+			-cpics /path/to/peaks/cpics/PEAKS000000.interval \
 			-Out /output/folder/name/for/ALIGNS000000_SNPs \     #(it must exist!! Директория для записи результатов)
 
 # Output format:
 Основной файл: ALIGNS039504_table.txt, формат следующий:
-CHR POS ID REF ALT EXP_REF EXP_ALT CTRL_REF CTRL_ALT IN_EXP IN_CTRL
+CHR POS ID REF ALT QUAL_EXP QUAL_CTRL EXP_REF EXP_ALT CTRL_REF CTRL_ALT IN_EXP IN_CTRL
 Первые 5 полей аналогичны vcf
+QUAL_EXP, QUAL_CTRL - GATK QUAL
 EXP_REF, CTRL_ALT - число ридов, выровненных в опыте на реф/альт аллель
 CTRL_REF, CTRL_ALT - то же, для контроля
 IN_EXP, IN_ALT - 0 или 1 - отсутствие или присутствие соответственно в опыте или контроле
