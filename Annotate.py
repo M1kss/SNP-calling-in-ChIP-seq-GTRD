@@ -1,24 +1,6 @@
 import sys
 import pandas as pd
 
-#def inside(line, table):
-#	for el in table:
-#		B = el.split()
-#		if B[0] != "#CHROM":
-#			if "chr" + B[0] == line[0]:
-#				if ((int(line[1])>B[1]) and (int(line[1])<B[2])):
-#					return True
-#	return False
-
-#def insidegem(line, table):
-#	for el in table:
-#		B = el.split()
-#		if B[0] != "#CHROM":
-#			if "chr" + B[0] == line[0]:
-#				if (int(line[1])>int(B[1])-150) and (int(line[1])<int(B[1])+150):
-#					return True
-#	return False
-
 if __name__ == "__main__":
 	output = open(sys.argv[10],"w")
 	
