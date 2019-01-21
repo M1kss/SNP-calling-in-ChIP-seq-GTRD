@@ -68,6 +68,3 @@ def main():
 			tableline10 = input10.readline().split()
 
 main()
-		
-		
-		

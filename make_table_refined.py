@@ -13,7 +13,7 @@ def write10(chr, pos, NAME, REF, ALT, ER, EA, QE, output10, bed10):
 	bed10.write(chr+'\t'+str(int(pos)-1)+'\t'+ pos +'\n')
 	output10.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + QE + '\t' + '0' + '\t' + ER + '\t' + EA + '\t' + '.' + '\t' + '.' + '\t' + '1' + '\t' + '0' + '\n')
 
-def write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, QE, QC output11):
+def write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, QE, QC, output11):
 	CR = str(CR)
 	CA = str(CA)
 	ER = str(ER)
@@ -53,6 +53,8 @@ read_from_file(vcf, exp)
 read_from_file(vcfctrl, ctrl)
 
 skipped = 0
+skip_dif = 0
+
 
 for (chr, pos) in exp.keys():
 	(ER, EA, NAME, REF, ALT, QE) = exp[(chr, pos)]
@@ -64,13 +66,14 @@ for (chr, pos) in exp.keys():
 		CA = Cpair[1]
 		QC = Cpair[5]
 		if Cpair[2] != NAME or Cpair[4] != ALT:
-			print('Something strange is happening! Different SNPs on the same coordinate!')
+			skip_dif += 1
+			continue
 		if Cpair[3] != REF:
 			print('Reference genomes for exp and ctrl don\'t match!')
 		if CR == 0 and ER == 0:
 			skipped += 1
 			continue
-		write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, QE, QC output11)
+		write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, QE, QC, output11)
 	else:
 		write10(chr, pos, NAME, REF, ALT, ER, EA, QE, output10, bed10)
 	
@@ -79,4 +82,4 @@ for (chr, pos) in ctrl.keys():
 	#del ctrl[(chr, pos)]
 	write01(chr, pos, NAME, REF, ALT, CR, CA, QC, output01, bed01)
 
-print('Skipped {} homozigous SNPs'.format(skipped))
+print('Skipped {0} homozigous SNPs and {1} mismatched SNPS'.format(skipped, skip_dif))
