@@ -1,9 +1,24 @@
 #!/bin/bash
 
+GETNAME(){
+	local var=$1
+	local varpath=${var%/*}
+	[ "$varpath" != "$var" ] && local vartmp="${var:${#varpath}}"
+		echo ${vartmp%.*}
+}
 
 WGC=false
 WGE=false
 WITHCTRL=false
+withmacs=false
+withsissrs=false
+withcpics=false
+withgem=false
+macs=-1
+sissrs=-1
+cpics=-1
+gem=-1
+
 
 while [ "`echo $1 | cut -c1`" = "-" ]
 do
@@ -24,7 +39,24 @@ do
 		[ "$CTRLPATH" != "$CTRL" ] && T="${CTRL:${#CTRLPATH}}"
 		CTRLNAME=${T%.*}
               	shift 2;;
-	-Peaks) PEAKS=$2
+	-macs) withmacs=true
+		macs=$2
+		NAMEM=$(GETNAME $macs)
+        	shift 2;;
+
+	-sissrs) withsissrs=true
+		sissrs=$2
+		NAMES=$( GETNAME $sissrs)
+        	shift 2;;
+
+	-cpics) withcpics=true
+		cpics=$2
+		NAMEC=$( GETNAME $cpics)
+              	shift 2;;
+
+	-gem) withgem=true
+		gem=$2
+		NAMEG=$( GETNAME $gem)
               	shift 2;;
 	-VCF) VCF=$2
               	shift 2;;
@@ -44,7 +76,6 @@ FD=$REFERENCE/"genome-norm.dict"
 
 bash pre-process.sh $EXPNAME \
 	$EXPPATH \
-	$PEAKS \
 	$OUT \
 	$VCF \
 	$FA \
@@ -59,7 +90,6 @@ fi
 if $WITHCTRL; then
 	bash pre-process.sh $CTRLNAME \
 		$CTRLPATH \
-		$PEAKS \
 		$OUT \
 		$VCF \
 		$FA \
@@ -118,4 +148,14 @@ fi
 
 echo "Total intermediate .bam size: $bam_size"
 
+
+
+python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs $cpics $gem $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
+
+rm "$OUT/${EXPNAME}_table.txt"
+rm "$TABLEPATH/${TABLENAME}_annotated.txt.m.txt"
+rm "$TABLEPATH/${TABLENAME}_annotated.txt.c.txt"
+rm "$TABLEPATH/${TABLENAME}_annotated.txt.s.txt"
+
 exit 0
+
