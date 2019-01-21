@@ -51,6 +51,7 @@ do
 done
 if $withmacs||$withsissrs||$withcpics||$withgem; then
 	python3 Annotate.py $table $macs $sissrs $cpics $gem $withmacs $withsissrs $withcpics $withgem "$TABLEPATH/${TABLENAME}_annotated.txt"
+	rm $table
 
 else
 	echo "There is no any caller data"
