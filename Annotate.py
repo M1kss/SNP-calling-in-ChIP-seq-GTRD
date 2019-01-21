@@ -28,7 +28,7 @@ def write_peak(in_line, peak_line, output, gem=False):
 			Write(in_line, '1', output)
 		else:
 			Write(in_line, '0', output)
-			return True
+		return True
 	else:
 		return False
 	
