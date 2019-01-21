@@ -41,7 +41,7 @@ done
 
 FA=$REFERENCE/"genome-norm.fasta"
 FD=$REFERENCE/"genome-norm.dict"
-:<<COMMENTBLOCK
+
 bash pre-process.sh $EXPNAME \
 	$EXPPATH \
 	$PEAKS \
@@ -55,9 +55,8 @@ if [ $? != 0 ]; then
     echo "Failed to pre-process exp"
     exit 1
 fi
-COMMENTBLOCK
+
 if $WITHCTRL; then
-    :<<COMMENTBLOCK
 	bash pre-process.sh $CTRLNAME \
 		$CTRLPATH \
 		$PEAKS \
@@ -71,7 +70,6 @@ if $WITHCTRL; then
     			echo "Failed to pre-process ctrl"
     			exit 1
 		fi
-COMMENTBLOCK
 	bash make_tables.sh $EXPNAME $CTRLNAME \
 		"$OUT/$EXPNAME.vcf" \
 		"$OUT/${CTRLNAME}.vcf" \
