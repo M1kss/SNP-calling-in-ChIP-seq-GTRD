@@ -78,7 +78,7 @@
 # Output format:
 Основной файл: ALIGNS039504_table.txt, формат следующий:
 
-CHR POS ID REF ALT QUAL_EXP QUAL_CTRL EXP_REF EXP_ALT CTRL_REF CTRL_ALT IN_EXP IN_CTRL
+CHR POS ID REF ALT QUAL_EXP QUAL_CTRL EXP_REF EXP_ALT CTRL_REF CTRL_ALT IN_EXP IN_CTRL IN_MACS IN_SISSRS IN_CPICS IN_GEM
 
 Первые 5 полей аналогичны vcf
 
@@ -90,5 +90,6 @@ CTRL_REF, CTRL_ALT - то же, для контроля
 
 IN_EXP, IN_ALT - 0 или 1 - отсутствие или присутствие соответственно в опыте или контроле
 
+IN_MACS, IN_SISSRS, IN_CPICS, IN_GEM - 0 или 1 - отсутствие или присутствие в пиках соответствующих коллеров
 
 Дополнительные файлы: original VCF-s and indexing
