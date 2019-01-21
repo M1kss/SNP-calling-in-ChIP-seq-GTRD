@@ -71,25 +71,25 @@ if __name__ == "__main__":
 	withcpics = sys.argv[8]
 	withgem = sys.argv[9]
 	
-	if withmacs:
+	if withmacs == "true":
 		macs = open(sys.argv[2], "r")
 		add_caller(macs, i, o+".m.txt")
 	else:
 		add_zeros(i, o+".m.txt")
 
-	if withsissrs:
+	if withsissrs ==  "true":
 		sissrs = open(sys.argv[3], "r")
 		add_caller(sissrs, o+".m.txt", o+".s.txt")
 	else:
 		add_zeros(o+".m.txt", o+".s.txt")
 	
-	if withcpics:
+	if withcpics == "true":
 		cpics = open(sys.argv[4], "r")
 		add_caller(cpics, o+".s.txt", o+".c.txt")
 	else:
 		add_zeros(o+".s.txt", o+".c.txt")
 	
-	if withgem:
+	if withgem == "true":
 		gem = open(sys.argv[5], "r")
 		add_caller(gem, o+".c.txt", o, gem=True)
 	else:
