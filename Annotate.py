@@ -56,8 +56,6 @@ if __name__ == "__main__":
 			else:
 				in_line = input.readline().split()
 		while in_line:
-			while write_peak(in_line, peak_line, output, gem):
-				in_line = input.readline().split()
 			Write(in_line, '0', output)
 			in_line = input.readline().split()
 	
