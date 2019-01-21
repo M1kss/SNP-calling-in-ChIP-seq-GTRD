@@ -55,5 +55,6 @@ if $withmacs||$withsissrs||$withcpics||$withgem; then
 else
 	echo "There is no any caller data"
 fi
+
 exit 0
 

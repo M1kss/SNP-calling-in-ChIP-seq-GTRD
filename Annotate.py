@@ -35,7 +35,7 @@ if __name__ == "__main__":
 	for line in input:
 		if withmacs:
 			if inside(line,macs):
-				M = "1"
+				M ="1"
 			else:
 				M = "0"
 		else:
