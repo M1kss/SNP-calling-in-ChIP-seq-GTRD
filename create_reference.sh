@@ -18,7 +18,7 @@ done
 
 source ./Config.cfg
 
-java $JavaParameters -jar $PICARD \
+$Java $JavaParameters -jar $PICARD \
 	NormalizeFasta \
 	I=$REF \
 	O="$OUT/genome-norm.fasta"
@@ -35,7 +35,7 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-java $JavaParameters -jar $PICARD \
+$Java $JavaParameters -jar $PICARD \
 	CreateSequenceDictionary \
 	R="$OUT/genome-norm.fasta"\
 	O="$OUT/genome-norm.dict"
