@@ -112,7 +112,7 @@ if $WITHCTRL; then
     		exit 1
 	fi
 else
-	python3 Make_tables_no_ctrl.py "$OUT/${EXPNAME}.vcf" "$OUT/${EXPNAME}_table.txt"
+	$python3 Make_tables_no_ctrl.py "$OUT/${EXPNAME}.vcf" "$OUT/${EXPNAME}_table.txt"
 	
 	if [ $? != 0 ]; then
     		echo "Failed to make tables"
@@ -150,7 +150,7 @@ echo "Total intermediate .bam size: $bam_size"
 
 
 
-python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs $cpics $gem $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
+$python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs $cpics $gem $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
 
 rm "$OUT/${EXPNAME}_table.txt"
 rm "$TABLEPATH/${TABLENAME}_annotated.txt.m.txt"
