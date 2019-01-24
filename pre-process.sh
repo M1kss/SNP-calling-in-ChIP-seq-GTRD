@@ -30,7 +30,7 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-java $JavaParameters -jar $PICARD \
+$Java $JavaParameters -jar $PICARD \
 	AddOrReplaceReadGroups \
 	I="$OUT/${BAMNAME}_chop.bam" \
 	O="$OUT/${BAMNAME}_formated.bam" \
@@ -45,7 +45,7 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-java $JavaParameters -jar $PICARD \
+$Java $JavaParameters -jar $PICARD \
 	MarkDuplicates \
 	I="$OUT/${BAMNAME}_formated.bam" \
 	O="$OUT/${BAMNAME}_ready.bam" \
@@ -57,7 +57,7 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-java $JavaParameters -jar $GATK \
+$Java $JavaParameters -jar $GATK \
 	BaseRecalibrator \
 	-R $FA \
 	-I "$OUT/${BAMNAME}_ready.bam" \
@@ -69,7 +69,7 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-java $JavaParameters -jar $GATK \
+$Java $JavaParameters -jar $GATK \
 	ApplyBQSR \
 	-R $FA \
 	-I "$OUT/${BAMNAME}_ready.bam" \
@@ -94,7 +94,7 @@ fi
 #fi
 
 if $WG; then
-		java $JavaParameters -jar $GATK \
+		$Java $JavaParameters -jar $GATK \
 		HaplotypeCaller \
 		-R $FA \
 		-I "$OUT/${BAMNAME}_final.bam" \
