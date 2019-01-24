@@ -36,28 +36,28 @@ do
 done
 
 
-python3 IntervalsToBed.py $macs "macs" $NAMEM $OUT
+$python3 IntervalsToBed.py $macs "macs" $NAMEM $OUT
 
 if [ $? != 0 ]; then
     echo "Failed to convert macs peaks"
     exit 1
 fi
 
-python3 IntervalsToBed.py $sissrs "sissrs" $NAMES $OUT
+$python3 IntervalsToBed.py $sissrs "sissrs" $NAMES $OUT
 
 if [ $? != 0 ]; then
     echo "Failed to convert sissrs peaks"
     exit 1
 fi
 
-python3 IntervalsToBed.py $gem "gem" $NAMEG $OUT
+$python3 IntervalsToBed.py $gem "gem" $NAMEG $OUT
 
 if [ $? != 0 ]; then
     echo "Failed to convert gem peaks"
     exit 1
 fi
 
-python3 IntervalsToBed.py $cpics "cpics" $NAMEC $OUT
+$python3 IntervalsToBed.py $cpics "cpics" $NAMEC $OUT
 
 if [ $? != 0 ]; then
     echo "Failed to convert cpics peaks"
