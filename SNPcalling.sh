@@ -141,9 +141,9 @@ if $WITHCTRL; then
 
 	rm "$OUT/${CTRLNAME}_final.bam"
 	rm "$OUT/${CTRLNAME}_final.bai"
-	rm "$OUT/${CTRL}_chop.bam"
-	rm "$OUT/${CTRL}_ready.bam"
-	rm "$OUT/${CTRL}_formated.bam"
+	rm "$OUT/${CTRLNAME}_chop.bam"
+	rm "$OUT/${CTRLNAME}_ready.bam"
+	rm "$OUT/${CTRLNAME}_formated.bam"
 fi
 
 echo "Total intermediate .bam size: $bam_size"
