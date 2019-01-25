@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source ./Config.cfg
 GETNAME(){
 	local var=$1
 	local varpath=${var%/*}
