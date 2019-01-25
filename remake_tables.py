@@ -1,6 +1,7 @@
 import sys
 
 def write01(line01, tableline01, output01):
+	global skipped
 	if line01[0] == tableline01[0] and line01[1] == tableline01[1]:
 		TR = tableline01[3]
 		TA = tableline01[4]
@@ -10,7 +11,7 @@ def write01(line01, tableline01, output01):
 			print('Reference genomes dont match!')
 			return True
 		if PA != '<*>' and PA != TA+',<*>' and PA != TA:
-			print('Different SNPs on one coordinate!')
+			skipped += 1
 			return True
 		I16 = line01[7].split(';')[1].split('=')[1].split(',')
 		ER = str(int(I16[0]) + int(I16[1]))
@@ -22,6 +23,7 @@ def write01(line01, tableline01, output01):
 		return False
 
 def write10(line10, tableline10, output10):
+	global skipped
 	if line10[0] == tableline10[0] and line10[1] == tableline10[1]:
 		TR = tableline10[3]
 		TA = tableline10[4]
@@ -31,7 +33,7 @@ def write10(line10, tableline10, output10):
 			print('Reference genomes dont match!')
 			return True
 		if PA != '<*>' and PA != TA+',<*>' and PA != TA:
-			print('Different SNPs on one coordinate!')
+			skipped += 1
 			return True
 		I16 = line10[7].split(';')[1].split('=')[1].split(',')
 		CR = str(int(I16[0]) + int(I16[1]))
@@ -87,4 +89,6 @@ def main():
 			write_line10(tableline10, '0', '0', output10)
 			tableline10 = input10.readline().split()
 
+skipped = 0
 main()
+print('Skipped {} mismatched SNPs'.format(skipped))
