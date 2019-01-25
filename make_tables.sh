@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source ./Config.cfg
 FA=$6
 EXPNAME=$1
 CTRLNAME=$2
