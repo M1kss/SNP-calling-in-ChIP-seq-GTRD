@@ -118,7 +118,7 @@ fi
 
 rm "$OUT/${BAMNAME}_metrics.txt"
 rm "$OUT/${BAMNAME}.table"
-rm "$OUT/${BAMNAME}_Peaks.interval_list"
+
 
 if [ -f $OUT/${BAMNAME}_ready.bam.bai ]; then
     rm "$OUT/${BAMNAME}_ready.bam.bai"
