@@ -159,9 +159,9 @@ echo "Total intermediate .bam size: $bam_size"
 $python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs $cpics $gem $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
 
 rm "$OUT/${EXPNAME}_table.txt"
-rm "$TABLEPATH/${TABLENAME}_table_annotated.txt.m.txt"
-rm "$TABLEPATH/${TABLENAME}_table_annotated.txt.c.txt"
-rm "$TABLEPATH/${TABLENAME}_table_annotated.txt.s.txt"
+rm "$OUT/${EXPNAME}_table_annotated.txt.m.txt"
+rm "$OUT/${EXPNAME}_table_annotated.txt.c.txt"
+rm "$OUT/${EXPNAME}_table_annotated.txt.s.txt"
 
 exit 0
 
