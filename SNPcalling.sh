@@ -71,6 +71,12 @@ do
 	esac
 done
 
+if [ ! -f "$VCF.tbi" ]; then
+	echo "Index file for VCF not found, indexing.."
+	$Java $JavaParameters  -jar $GATK \
+	IndexFeatureFile \
+        -F $VCF
+fi
 FA=$REFERENCE/"genome-norm.fasta"
 FD=$REFERENCE/"genome-norm.dict"
 
