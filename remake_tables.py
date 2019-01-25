@@ -1,7 +1,17 @@
 import sys
 
 def write01(line01, tableline01, output01):
-	if line01[0] == tableline01[0] and line01[1] == tableline01[1]:		
+	if line01[0] == tableline01[0] and line01[1] == tableline01[1]:
+		TR = tableline01[3]
+		TA = tableline01[4]
+		PR = line01[3]
+		PA = line01[4]
+		if  TR != PR:
+			print('Reference genomes dont match!')
+			return True
+		if PA != '<*>' and PA != TA+',<*>' and PA != TA:
+			print('Different SNPs on one coordinate!')
+			return True
 		I16 = line01[7].split(';')[1].split('=')[1].split(',')
 		ER = str(int(I16[0]) + int(I16[1]))
 		EA = str(int(I16[2]) + int(I16[3]))
@@ -13,6 +23,16 @@ def write01(line01, tableline01, output01):
 
 def write10(line10, tableline10, output10):
 	if line10[0] == tableline10[0] and line10[1] == tableline10[1]:
+		TR = tableline10[3]
+		TA = tableline10[4]
+		PR = line10[3]
+		PA = line10[4]
+		if  TR != PR:
+			print('Reference genomes dont match!')
+			return True
+		if PA != '<*>' and PA != TA+',<*>' and PA != TA:
+			print('Different SNPs on one coordinate!')
+			return True
 		I16 = line10[7].split(';')[1].split('=')[1].split(',')
 		CR = str(int(I16[0]) + int(I16[1]))
 		CA = str(int(I16[2]) + int(I16[3]))
