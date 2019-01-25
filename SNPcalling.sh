@@ -134,10 +134,10 @@ rm "$OUT/${EXPNAME}_ready.bam"
 rm "$OUT/${EXPNAME}_formated.bam"
 
 if $WITHCTRL; then
-    bam_size=$($bam_size+$(wc -c <"$OUT/${CTRLNAME}_formated.bam"))
-    bam_size=$($bam_size+$(wc -c <"$OUT/${CTRLNAME}_ready.bam"))
-    bam_size=$($bam_size+$(wc -c <"$OUT/${CTRLNAME}_chop.bam"))
-    bam_size=$($bam_size+$(wc -c <"$OUT/${CTRLNAME}_final.bam"))
+    bam_size=$(($bam_size+$(wc -c <"$OUT/${CTRLNAME}_formated.bam")))
+    bam_size=$(($bam_size+$(wc -c <"$OUT/${CTRLNAME}_ready.bam")))
+    bam_size=$(($bam_size+$(wc -c <"$OUT/${CTRLNAME}_chop.bam")))
+    bam_size=$(($bam_size+$(wc -c <"$OUT/${CTRLNAME}_final.bam")))
 
 	rm "$OUT/${CTRLNAME}_final.bam"
 	rm "$OUT/${CTRLNAME}_final.bai"
