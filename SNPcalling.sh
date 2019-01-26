@@ -165,6 +165,6 @@ rm "$OUT/${EXPNAME}_table.txt"
 rm "$OUT/${EXPNAME}_table_annotated.txt.m.txt"
 rm "$OUT/${EXPNAME}_table_annotated.txt.c.txt"
 rm "$OUT/${EXPNAME}_table_annotated.txt.s.txt"
-
+rm "$gem.sorted"
 exit 0
 
