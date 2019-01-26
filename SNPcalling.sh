@@ -155,7 +155,10 @@ fi
 echo "Total intermediate .bam size: $bam_size"
 
 bedtools sort -i $gem > "$gem.sorted"
-
+if [ $? != 0 ]; then
+    	echo "Failed to sort gem peaks"
+    	exit 1
+fi
 $python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs $cpics "$gem.sorted" $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
 
 rm "$OUT/${EXPNAME}_table.txt"
