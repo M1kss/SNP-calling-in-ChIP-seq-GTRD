@@ -159,12 +159,16 @@ if [ $? != 0 ]; then
     	echo "Failed to sort gem peaks"
     	exit 1
 fi
-$python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs $cpics "$gem.sorted" $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
+
+bedtools sort -i $cpics > "$cpics.sorted"
+
+$python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs "$cpics.sorted" "$gem.sorted" $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
 
 rm "$OUT/${EXPNAME}_table.txt"
 rm "$OUT/${EXPNAME}_table_annotated.txt.m.txt"
 rm "$OUT/${EXPNAME}_table_annotated.txt.c.txt"
 rm "$OUT/${EXPNAME}_table_annotated.txt.s.txt"
 rm "$gem.sorted"
+rm "$gem.cpics"
 exit 0
 
