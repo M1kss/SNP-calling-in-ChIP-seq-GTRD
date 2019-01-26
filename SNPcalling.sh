@@ -154,9 +154,9 @@ fi
 
 echo "Total intermediate .bam size: $bam_size"
 
+bedtools sort -i $gem > "$gem.sorted"
 
-
-$python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs $cpics $gem $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
+$python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs $cpics "$gem.sorted" $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
 
 rm "$OUT/${EXPNAME}_table.txt"
 rm "$OUT/${EXPNAME}_table_annotated.txt.m.txt"
