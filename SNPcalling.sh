@@ -154,13 +154,13 @@ fi
 
 echo "Total intermediate .bam size: $bam_size"
 
-bedtools sort -i $gem > "$gem.sorted"
+$Bedtools sort -i $gem > "$gem.sorted"
 if [ $? != 0 ]; then
     	echo "Failed to sort gem peaks"
     	exit 1
 fi
 
-bedtools sort -i $cpics > "$cpics.sorted"
+$Bedtools sort -i $cpics > "$cpics.sorted"
 if [ $? != 0 ]; then
     	echo "Failed to sort cpics peaks"
     	exit 1
