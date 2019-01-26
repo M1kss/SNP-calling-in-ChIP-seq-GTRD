@@ -161,7 +161,10 @@ if [ $? != 0 ]; then
 fi
 
 bedtools sort -i $cpics > "$cpics.sorted"
-
+if [ $? != 0 ]; then
+    	echo "Failed to sort cpics peaks"
+    	exit 1
+fi
 $python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs "$cpics.sorted" "$gem.sorted" $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
 
 rm "$OUT/${EXPNAME}_table.txt"
