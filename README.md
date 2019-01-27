@@ -37,7 +37,7 @@
 6. java 8 (не выше и не ниже!)
 7. picard (https://github.com/broadinstitute/picard/releases/download/2.18.25/picard.jar)
 8. GATK (https://github.com/broadinstitute/gatk/releases/download/4.0.12.0/gatk-4.0.12.0.zip)
-9. В файле Config.cfg указать путь куда скачан picard.jar и распакован gatk-package-4.0.x.0-local.jar, в JavaParameters = "" указать через пробел параметры и опции запуска java (по умолчанию оставить -Xmx12G)
+9. В файле Config.cfg указать путь куда скачан picard.jar и распакован gatk-package-4.0.x.0-local.jar, пути к установленным программам, в JavaParameters = "" указать через пробел параметры и опции запуска java (по умолчанию оставить -Xmx12G)
 
 ### Для всех датасетов с одним и тем же референсным геномом:
 
