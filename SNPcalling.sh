@@ -7,9 +7,7 @@ GETNAME(){
 		echo ${vartmp%.*}
 }
 
-WGC=false
 WGE=false
-WITHCTRL=false
 withmacs=false
 withsissrs=false
 withcpics=false
@@ -33,12 +31,6 @@ do
 		[ "$EXPPATH" != "$EXP" ] && TMP="${EXP:${#EXPPATH}}"
 		EXPNAME=${TMP%.*}
         	shift 2;;
-	-Ctrl) CTRL=$2
-		WITHCTRL=true
-		CTRLPATH=${CTRL%/*}
-		[ "$CTRLPATH" != "$CTRL" ] && T="${CTRL:${#CTRLPATH}}"
-		CTRLNAME=${T%.*}
-              	shift 2;;
 	-macs) withmacs=true
 		macs=$2
 		NAMEM=$(GETNAME $macs)
