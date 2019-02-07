@@ -21,10 +21,10 @@ VCFctrl=-1
 while [ "`echo $1 | cut -c1`" = "-" ]
 do
     case "$1" in
-    -Out) OUT=$2
+	-Out) OUT=$2
         shift 2;;
 
-    -Ref) REFERENCE=$2
+	-Ref) REFERENCE=$2
         shift 2;;
 
 	-macs) withmacs=true
@@ -40,19 +40,19 @@ do
 	-cpics) withcpics=true
 		cpics=$2
 		NAMEC=$( GETNAME $cpics)
-            shift 2;;
+		shift 2;;
 
 	-gem) withgem=true
 		gem=$2
 		NAMEG=$( GETNAME $gem)
-            shift 2;;
+		shift 2;;
 	-VCFexp) VCFexp=$2
-	    EXPNAME=$( GETNAME $VCFexp )
-        shift 2;;
-    -VCFctrl) VCFctrl=$2
-        shift 2;;
+		EXPNAME=$( GETNAME $VCFexp )
+		shift 2;;
+	-VCFctrl) VCFctrl=$2
+		shift 2;;
     *)
-            echo "There is no option $1"
+	echo "There is no option $1"
     break;;
 	esac
 done
@@ -67,7 +67,7 @@ if [ $VCFctrl != -1 ]; then
 
     if [ $? != 0 ]; then
         echo "Failed to make table from vcf"
-            exit 1
+        exit 1
     fi
 
     cat "$OUT${EXPNAME}_table_01.txt" "$OUT${EXPNAME}_table_10.txt" "$OUT${EXPNAME}_table_11.txt" | bedtools sort -i > "$OUT${EXPNAME}_table_pre.txt"
