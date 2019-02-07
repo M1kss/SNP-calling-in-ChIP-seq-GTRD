@@ -81,18 +81,6 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-#if 
-#java $JavaParameters -jar $PICARD \
-#	BedToIntervalList \
-#	I=$BED \
-#	O="$OUT/${BAMNAME}_Peaks.interval_list" \
-#	SD=$FD
-
-#if [ $? != 0 ]; then
-#    echo "Failed to convert bed to IntervalList"
-#    exit 1
-#fi
-
 if $WG; then
 		$Java $JavaParameters -jar $GATK \
 		HaplotypeCaller \
@@ -102,13 +90,6 @@ if $WG; then
 		-O "$OUT/${BAMNAME}.vcf" 
 	else
 		echo "cant be done"
-		#java $JavaParameters -jar $GATK \
-		#HaplotypeCaller \
-		#-R $FA \
-		#-I "$OUT/${BAMNAME}_final.bam" \
-		#--dbsnp $VCF \
-		#-O "$OUT/${BAMNAME}.vcf" \
-		#-L "$OUT/${BAMNAME}_Peaks.interval_list"
 fi
 
 if [ $? != 0 ]; then

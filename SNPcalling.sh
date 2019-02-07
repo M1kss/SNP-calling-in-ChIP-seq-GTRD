@@ -7,7 +7,7 @@ GETNAME(){
 		echo ${vartmp%.*}
 }
 
-WGE=false
+WG=false
 withmacs=false
 withsissrs=false
 withcpics=false
@@ -21,45 +21,22 @@ gem=-1
 while [ "`echo $1 | cut -c1`" = "-" ]
 do
     case "$1" in
-        -Out) OUT=$2
-        	shift 2;;
-		
-        -Ref) REFERENCE=$2
-        	shift 2;;
+    -Out) OUT=$2
+        shift 2;;
+    -Ref) REFERENCE=$2
+        shift 2;;
 	-Exp) EXP=$2
 		EXPPATH=${EXP%/*}
 		[ "$EXPPATH" != "$EXP" ] && TMP="${EXP:${#EXPPATH}}"
 		EXPNAME=${TMP%.*}
         	shift 2;;
-	-macs) withmacs=true
-		macs=$2
-		NAMEM=$(GETNAME $macs)
-        	shift 2;;
-
-	-sissrs) withsissrs=true
-		sissrs=$2
-		NAMES=$( GETNAME $sissrs)
-        	shift 2;;
-
-	-cpics) withcpics=true
-		cpics=$2
-		NAMEC=$( GETNAME $cpics)
-              	shift 2;;
-
-	-gem) withgem=true
-		gem=$2
-		NAMEG=$( GETNAME $gem)
-              	shift 2;;
 	-VCF) VCF=$2
               	shift 2;;
-	-WGE) WGE=true
+	-WG) WG=true
 		shift 1;;
-	-WGC) WGC=true
-		shift 1;;
-        *)
-                echo "There is no option $1"
-		break
-            ;;
+    *)
+        echo "There is no option $1"
+	break;;
 	esac
 done
 
@@ -69,6 +46,7 @@ if [ ! -f "$VCF.tbi" ]; then
 	IndexFeatureFile \
         -F $VCF
 fi
+
 FA=$REFERENCE/"genome-norm.fasta"
 FD=$REFERENCE/"genome-norm.dict"
 
@@ -78,92 +56,26 @@ bash pre-process.sh $EXPNAME \
 	$VCF \
 	$FA \
 	$FD \
-	$WGE
+	$WG
 
 if [ $? != 0 ]; then
     echo "Failed to pre-process exp"
     exit 1
 fi
 
-if $WITHCTRL; then
-	bash pre-process.sh $CTRLNAME \
-		$CTRLPATH \
-		$OUT \
-		$VCF \
-		$FA \
-		$FD \
-		$WGC
-
-		if [ $? != 0 ]; then
-    			echo "Failed to pre-process ctrl"
-    			exit 1
-		fi
-	bash make_tables.sh $EXPNAME $CTRLNAME \
-		"$OUT/$EXPNAME.vcf" \
-		"$OUT/${CTRLNAME}.vcf" \
-		$OUT \
-		$FA
-	
-
-	if [ $? != 0 ]; then
-    		echo "Failed to make tables"
-    		exit 1
-	fi
-else
-	$python3 Make_tables_no_ctrl.py "$OUT/${EXPNAME}.vcf" "$OUT/${EXPNAME}_table.txt"
-	
-	if [ $? != 0 ]; then
-    		echo "Failed to make tables"
-    		exit 1
-	fi
-fi
-
 bam_size=0
 
-bam_size=$(($bam_size+$(wc -c <"$OUT/${EXPNAME}_formated.bam")))
-bam_size=$(($bam_size+$(wc -c <"$OUT/${EXPNAME}_ready.bam")))
-bam_size=$(($bam_size+$(wc -c <"$OUT/${EXPNAME}_chop.bam")))
-bam_size=$(($bam_size+$(wc -c <"$OUT/${EXPNAME}_final.bam")))
+bam_size=$(($bam_size+$(wc -c <"$OUT${EXPNAME}_formated.bam")))
+bam_size=$(($bam_size+$(wc -c <"$OUT${EXPNAME}_ready.bam")))
+bam_size=$(($bam_size+$(wc -c <"$OUT${EXPNAME}_chop.bam")))
+bam_size=$(($bam_size+$(wc -c <"$OUT${EXPNAME}_final.bam")))
 
-rm "$OUT/${EXPNAME}_final.bam"
-rm "$OUT/${EXPNAME}_final.bai"
-rm "$OUT/${EXPNAME}_chop.bam"
-rm "$OUT/${EXPNAME}_ready.bam"
-rm "$OUT/${EXPNAME}_formated.bam"
-
-if $WITHCTRL; then
-    bam_size=$(($bam_size+$(wc -c <"$OUT/${CTRLNAME}_formated.bam")))
-    bam_size=$(($bam_size+$(wc -c <"$OUT/${CTRLNAME}_ready.bam")))
-    bam_size=$(($bam_size+$(wc -c <"$OUT/${CTRLNAME}_chop.bam")))
-    bam_size=$(($bam_size+$(wc -c <"$OUT/${CTRLNAME}_final.bam")))
-
-	rm "$OUT/${CTRLNAME}_final.bam"
-	rm "$OUT/${CTRLNAME}_final.bai"
-	rm "$OUT/${CTRLNAME}_chop.bam"
-	rm "$OUT/${CTRLNAME}_ready.bam"
-	rm "$OUT/${CTRLNAME}_formated.bam"
-fi
+rm "$OUT${EXPNAME}_final.bam"
+rm "$OUT${EXPNAME}_final.bai"
+rm "$OUT${EXPNAME}_chop.bam"
+rm "$OUT${EXPNAME}_ready.bam"
+rm "$OUT${EXPNAME}_formated.bam"
 
 echo "Total intermediate .bam size: $bam_size"
 
-$Bedtools sort -i $gem > "$gem.sorted"
-if [ $? != 0 ]; then
-    	echo "Failed to sort gem peaks"
-    	exit 1
-fi
-
-$Bedtools sort -i $cpics > "$cpics.sorted"
-if [ $? != 0 ]; then
-    	echo "Failed to sort cpics peaks"
-    	exit 1
-fi
-$python3 Annotate.py "$OUT/${EXPNAME}_table.txt" $macs $sissrs "$cpics.sorted" "$gem.sorted" $withmacs $withsissrs $withcpics $withgem "$OUT/${EXPNAME}_table_annotated.txt"
-
-rm "$OUT/${EXPNAME}_table.txt"
-rm "$OUT/${EXPNAME}_table_annotated.txt.m.txt"
-rm "$OUT/${EXPNAME}_table_annotated.txt.c.txt"
-rm "$OUT/${EXPNAME}_table_annotated.txt.s.txt"
-rm "$gem.sorted"
-rm "$cpics.sorted"
 exit 0
-
