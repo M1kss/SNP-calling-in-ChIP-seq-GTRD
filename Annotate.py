@@ -1,5 +1,4 @@
 import sys
-import pandas as pd
 
 def Write(line, num, output):
 	output.write('\t'.join(line) + '\t' + num + '\n')
