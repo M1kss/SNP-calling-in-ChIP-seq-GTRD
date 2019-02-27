@@ -1,5 +1,6 @@
 
 import sys
+import gzip
 
 def write01(chr, pos, NAME, REF, ALT, CR, CA, QC, GQC, output01):
 	CR = str(CR)
@@ -18,8 +19,8 @@ def write11(chr, pos, NAME, REF, ALT, ER, EA, CR, CA, QE, QC, GQE, GQC, output11
 	EA = str(EA)
 	output11.write(chr + '\t' + pos + '\t' + NAME + '\t' + REF + '\t' + ALT + '\t' + QE + '\t' + QC + '\t' + GQE + '\t' + GQC + '\t' + ER + '\t' + EA + '\t' + CR + '\t' + CA + '\t' + '1' + '\t' + '1' + '\n')
 
-vcf = open(sys.argv[1], 'r')
-vcfctrl = open(sys.argv[2], 'r')
+vcf = gzip.open(sys.argv[1], 'r')
+vcfctrl = gzip.open(sys.argv[2], 'r')
 output11 = open(sys.argv[3],'w')
 output01 = open(sys.argv[4],'w')
 output10 = open(sys.argv[5],'w')
@@ -31,6 +32,7 @@ Nucleotides = {'A','T','G','C'}
 
 def read_from_file(vcf, out):
 	for line in vcf:
+		line = line.decode('UTF-8')
 		if line[0] == '#':
 			continue
 		line = line.split()
