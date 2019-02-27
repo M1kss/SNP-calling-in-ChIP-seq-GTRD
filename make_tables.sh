@@ -49,10 +49,10 @@ do
 
 	-VCFexp) VCFexp=$2
 		EXPNAME=$( GETNAME $VCFexp )
-	shift 2;;
+		shift 2;;
 
 	-VCFctrl) VCFctrl=$2
-	shift 2;;
+		shift 2;;
 
 	*)
 		echo "There is no option $1"
