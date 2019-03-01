@@ -19,7 +19,7 @@ def write_peak(in_line, peak_line, output, gem=False):
 	end = int(peak_line[2])
 		
 	if gem:
-		start = start - 150
+		start = max(0, start - 150)
 		end = end + 150
 	
 	if less((chr, pos), (chr_p, end)):
