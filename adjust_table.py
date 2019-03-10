@@ -169,7 +169,10 @@ while ape_line and table_line:
 		
 		print(chr, pos, p_e)		
 		
-		pb = min(stats.binom_test((EA,ER), p=p_e), stats.binom_test((EA,ER), p=p_chr[chr]))
+		X = min(ER, EA)
+		N = ER + EA
+
+		pb = min(max(stats.binom_test(X, n=N, p=p_e), stats.binom_test(X, n=N, p=p_chr[chr])), 1)
 		if EA < ER:
 			sign = -1
 		else:
