@@ -138,6 +138,16 @@ while ape_line and table_line:
 	assert ape_chr == chr
 	assert ape_pos == pos
 	
+	if ape_line[2] == ape_line[5] and ape_line[3] == ape_line[6]:
+		x = int(ape_line[2])
+		Ln = len(ape_line[4])
+		if ape_line[3] == 'direct':
+			mpos = 1-x
+		else:
+			mpos = Ln+x-1
+	else:
+		mpos = '.'
+
 	if int(table_line[13]):
 		ER = int(table_line[9])
 		EA = int(table_line[10])
@@ -222,7 +232,7 @@ while ape_line and table_line:
 	p2 = round(float(ape_line[-2]), 50)
 	p1 = round(float(ape_line[-3]), 50)
 	
-	out.write('\t'.join(table_line)+'\t'+'\t'.join(map(str, [pb, fisher_p, p1, p2, fc]))+'\t'+'\t'.join([p_exp, p_ctrl])+'\n')
+	out.write('\t'.join(table_line)+'\t'+'\t'.join(map(str, [pb, fisher_p, p1, p2, fc]))+'\t'+'\t'.join([p_exp, p_ctrl])+'\t'+str(mpos)+'\n')
 	
 	ape_line = ape.readline()
 	table_line = table.readline()
