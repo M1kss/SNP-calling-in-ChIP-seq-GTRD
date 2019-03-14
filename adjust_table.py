@@ -232,7 +232,7 @@ while ape_line and table_line:
 	p2 = round(float(ape_line[-2]), 50)
 	p1 = round(float(ape_line[-3]), 50)
 	
-	out.write('\t'.join(table_line)+'\t'+'\t'.join(map(str, [pb, fisher_p, p1, p2, fc]))+'\t'+'\t'.join([p_exp, p_ctrl])+'\t'+str(mpos)+'\n')
+	out.write('\t'.join(table_line)+'\t'+'\t'.join(map(str, [pb, fisher_p, p1, p2, fc]))+'\t'+'\t'.join([p_exp, p_ctrl])+'\t'+str(mpos)+'\t'+ape_line[3]+'\n')
 	
 	ape_line = ape.readline()
 	table_line = table.readline()
