@@ -1,130 +1,53 @@
 import sys
-import numpy as np
-from collections import deque
-
-fasta = open(sys.argv[2],'r')
-table = open(sys.argv[1],'r')
-
-out = open(sys.argv[3],'w')
-
-num = dict(zip(['A','a','C','c','G','g','T','t'],[1,1,2,2,3,3,4,4]))
-nuc = dict(zip([1,2,3,4,5],['a','c','g','t','N']))
-
-positions = dict()
-gen = dict()
+from scipy import stats
+import math
 
 
-for i in range(1,23):
-	positions['chr'+str(i)] = deque()
-	gen['chr'+str(i)] = np.zeros(25*10**7, np.int8)
-positions['chrX'] = deque()
-positions['chrY'] = deque()
-gen['chrX'] = np.zeros(25*10**7, np.int8)
-gen['chrY'] = np.zeros(25*10**7, np.int8)
+table = open(sys.argv[1], 'r')
+ape = open(sys.argv[2], 'r')
+out = open(sys.argv[3], 'w')
 
 
-for line in table:
-	line = line.split()
-	positions[line[0]].append(int(line[1]))
-table.seek(0)
+out.write('#header\n')
 
+ape.readline()
+ape_line = ape.readline()
+table_line = table.readline()	
 
-p = 0
-l = 10000000
-skip_to_next_chr = False
-for line in fasta:
-	if line[0] == '>':
-		chr = line[1:-1]
-		print(chr)
-		if chr not in positions.keys():
-			skip_to_next_chr = True
-			continue
+while ape_line and table_line:
+	ape_line = ape_line.split()
+	table_line = table_line.split()
+	
+	ape_name = ape_line[0].split('_')
+	ape_chr = ape_name[0]
+	ape_pos = ape_name[1]
+	
+	chr = table_line[0]
+	pos = table_line[1]
+	
+	assert ape_chr == chr
+	assert ape_pos == pos
+	
+	orientation = ape_line[3]
+
+	if ape_line[2] == ape_line[5] and ape_line[3] == ape_line[6]:
+		x = int(ape_line[2])
+		Ln = len(ape_line[4])
+		if orientation == 'direct':
+			mpos = 1-x
 		else:
-			skip_to_next_chr = False
-		p = 0
-
-		count = 0
-
-		next_1 = 0
-		next_2 = 0
-
-		if positions[chr]:
-			next_1 = positions[chr].popleft()
-			next_start = next_1-25
-			next_end = next_1+25
-			#print(next_start, next_end)
-			if positions[chr]:
-				next_2 = positions[chr].popleft()
-				#print(next_2)
-				while next_end >= next_2-25:
-					next_end = next_2+25
-					if positions[chr]:
-						next_2 = positions[chr].popleft()
-					else:
-						break
-		else:
-			skip_to_next_chr = True
-		print(next_start, next_end)
+			mpos = Ln+x-1
 	else:
-		if skip_to_next_chr:
-			continue
-		if p < next_start -110:
-			p += 100
+		mpos = '.'
 
-			if p//l > count:
-				count = p//l
-				print(count*l, '+100', next_start, next_end)
-				
-			continue
-		for sym in line.strip():
-			p += 1
+	fc = float(ape_line[-1])
+	
+	p2 = round(float(ape_line[-2]), 50)
+	p1 = round(float(ape_line[-3]), 50)
+	
+	out.write('\t'.join(['\t'.join(table_line), '\t'.join(map(str, [p1, p2, fc])), str(mpos), orientation])+'\n')
+	
+	ape_line = ape.readline()
+	table_line = table.readline()
 
-			
-
-			if p//l > count:
-				count = p//l
-				#print(count*l, '+1', next_start, next_end)
-
-			if p > next_end:
-				if positions[chr]:
-					next_1 = next_2
-					next_start = next_1-25
-					next_end = next_1+25
-					if positions[chr]:
-						next_2 = positions[chr].popleft()
-						while next_end >= next_2-25:
-							#print('a-haa!', p, next_start, next_end, next_2-25)
-							next_end = next_2+25
-							if positions[chr]:
-								next_2 = positions[chr].popleft()
-							else:
-								break
-				else:
-					if next_2:
-						next_1 = next_2
-						next_2 = 0
-						next_start = next_1-25
-						next_end = next_1+25
-					else:
-						skip_to_next_chr = True
-						break
-			if p >= next_start and p<= next_end:
-				gen[chr][p] = num.get(sym.lower(), 5)
-
-
-
-for line in table:
-	line = line.split()
-	chr = line[0]
-	callers = int(line[-1]) + int(line[-2]) + int(line[-3]) + int(line[-4])
-	if callers < 0:
-		continue
-	p = int(line[1])
-	in_c = line[-5]
-	in_e = line[-6]
-	gq = str(int(line[7])+int(line[8]))
-	R = line[3]
-	A = line[4]
-	print(chr, p, gen[chr][p])
-	if (R.lower() != nuc[gen[chr][p]]): print('Vse ploho', chr, line[1])
-	out.write(chr+'_'+line[1]+'_'+gq+'_'+in_e+'_'+in_c+'_'+str(callers)+' '+''.join([nuc[gen[chr][p-25+i]] for i in range(25)])+'['+R+'/'+A+']'+''.join([nuc[gen[chr][p+1+i]] for i in range(25)])+'\n')
+assert(not(ape_line or table_line))
